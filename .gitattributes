@@ -5,3 +5,4 @@
 *.png -delta
 *.mp4 -delta
 *.mp3 -delta
+*.fbx filter=lfs diff=lfs merge=lfs -text
