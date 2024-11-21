@@ -2,30 +2,33 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public int maxHealth = 100; // Points de vie maximum de l'ennemi
-    private int currentHealth; // Points de vie actuels de l'ennemi
+    public int maxHealth = 100;
+    private int currentHealth;
 
     void Start()
     {
-        currentHealth = maxHealth; // Au début, les points de vie actuels sont égaux aux points de vie maximum
+        // Initialiser la santé de l'ennemi
+        currentHealth = maxHealth;
     }
 
     public bool TakeDamage(int damageAmount)
     {
-        currentHealth -= damageAmount; // Réduire les points de vie actuels de l'ennemi en fonction des dégâts subis
+        // Réduire la santé et vérifier si l'ennemi est tué
+        currentHealth -= damageAmount;
+        Debug.Log($"Dégâts infligés : {damageAmount}, Santé restante : {currentHealth}");
 
         if (currentHealth <= 0)
         {
-            Die(); // Si les points de vie actuels sont inférieurs ou égaux à zéro, l'ennemi meurt
-            return true; // Renvoie true pour indiquer que l'ennemi a été tué
+            Die();
+            return true;
         }
-        
-        return false; // Renvoie false pour indiquer que l'ennemi est toujours en vie
+
+        return false;
     }
 
-    void Die()
+    private void Die()
     {
-        // Ajoutez ici toute logique nécessaire pour faire disparaître l'ennemi (comme la destruction de l'objet)
+        Debug.Log("Ennemi éliminé !");
         Destroy(gameObject);
     }
 }

@@ -1,35 +1,62 @@
-#if UNITY_EDITOR
-#endif
 using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int maxHealth = 100; // Vie maximale du joueur
+    [Header("Player Health Configuration")]
+    public int maxHealth = 100;
     private int currentHealth;
-    public HealthBar healthBar;
-    public Animator animator;
-    public GameObject gameOverCanvas; // Référence à l'écran Game Over dans la scène
 
-    private bool isDead = false;
+    public HealthBar healthBar;
+    public GameObject gameOverCanvas;
+    public Animator animator;
+
+    private bool isDead;
+
+    public int CurrentHealth => currentHealth; // Propriété pour accéder à la santé actuelle
 
     void Start()
     {
         currentHealth = maxHealth;
-        healthBar.SetSliderMax(maxHealth);
-        gameOverCanvas.SetActive(false);
+
+        if (healthBar != null)
+        {
+            healthBar.SetSliderMax(maxHealth);
+        }
+
+        if (gameOverCanvas != null)
+        {
+            gameOverCanvas.SetActive(false);
+        }
     }
 
-    public void TakeDamage(int damageAmount)
+    public void TakeDamage(int damage)
     {
-        if (isDead)
-            return;
+        if (isDead) return;
 
-        currentHealth -= damageAmount;
-        healthBar.SetSlider(currentHealth);
+        currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
+
+        
+
+        if (healthBar != null)
+        {
+            healthBar.SetSlider(currentHealth);
+        }
 
         if (currentHealth <= 0)
         {
             Die();
+        }
+    }
+
+    public void HealFull()
+    {
+        if (isDead) return;
+
+        currentHealth = maxHealth;
+
+        if (healthBar != null)
+        {
+            healthBar.SetSlider(currentHealth);
         }
     }
 
@@ -49,11 +76,8 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log($"Vie restaurée : +{healAmount}. Vie actuelle : {currentHealth}");
     }
 
-    void Die()
+    private void Die()
     {
-        if (isDead)
-            return;
-
         isDead = true;
 
         if (animator != null)
@@ -61,19 +85,14 @@ public class PlayerHealth : MonoBehaviour
             animator.SetTrigger("Die");
         }
 
-        // Activer le Canvas de Game Over
-        gameOverCanvas.SetActive(true);
-
-        // Arrêter le jeu
-        QuitGame();
+        if (gameOverCanvas != null)
+        {
+            gameOverCanvas.SetActive(true);
+        }
     }
 
-    void QuitGame()
+    public bool IsDead()
     {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
+        return isDead;
     }
 }

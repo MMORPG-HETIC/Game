@@ -3,22 +3,20 @@ using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
-    public static int score = 0; // Variable pour stocker le score
-    public Text scoreText; // Référence au texte affichant le score
+    public Text scoreText;
+    private int score;
 
-    void Start()
+    public void IncrementScore(int value = 1)
     {
-        UpdateScoreText(); // Mettre à jour le texte du score au début du jeu
+        score += value;
+        UpdateScoreText();
     }
 
-    public void IncrementScore()
+    private void UpdateScoreText()
     {
-        score++; // Incrémenter le score
-        UpdateScoreText(); // Mettre à jour le texte du score
-    }
-
-    void UpdateScoreText()
-    {
-        scoreText.text = "Score: " + score.ToString(); // Mettre à jour le texte du score affiché à l'écran
+        if (scoreText != null)
+        {
+            scoreText.text = $"Score: {score}";
+        }
     }
 }
