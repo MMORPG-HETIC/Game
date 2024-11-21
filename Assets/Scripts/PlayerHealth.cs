@@ -1,12 +1,10 @@
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int maxHealth = 100;
+    public int maxHealth = 100; // Vie maximale du joueur
     private int currentHealth;
     public HealthBar healthBar;
     public Animator animator;
@@ -33,6 +31,22 @@ public class PlayerHealth : MonoBehaviour
         {
             Die();
         }
+    }
+
+    public void Heal(int healAmount)
+    {
+        if (isDead)
+            return;
+
+        currentHealth += healAmount;
+
+        // Assurez-vous que la santé ne dépasse pas le maximum
+        currentHealth = Mathf.Min(currentHealth, maxHealth);
+
+        // Mettre à jour la barre de santé
+        healthBar.SetSlider(currentHealth);
+
+        Debug.Log($"Vie restaurée : +{healAmount}. Vie actuelle : {currentHealth}");
     }
 
     void Die()
