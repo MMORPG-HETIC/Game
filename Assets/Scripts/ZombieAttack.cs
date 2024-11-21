@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ZombieAttack : MonoBehaviour
 {
-    public int damageAmount = 3; // Montant des dégâts infligés au joueur
+    public int damageAmount = 2; // Montant des dégâts infligés au joueur
     public float attackRange = 3f; // Portée de l'attaque
 
     private GameObject player;
