@@ -1,37 +1,74 @@
 using UnityEngine;
 
-public class PlayerControler : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     public float speed = 6f;
-
-    public float Jumpspeed = 8f;
-
     public float gravity = 20f;
+    public float mouseSensitivity = 150f;
 
-    private Vector3 moveD = Vector3.zero;
-    CharacterController Cac;
+    private Vector3 moveDirection = Vector3.zero;
+    private CharacterController characterController;
+    private Animator playerAnimator;
 
     void Start()
     {
-        Cac = GetComponent<CharacterController>();
+        characterController = GetComponent<CharacterController>();
+        playerAnimator = GetComponent<Animator>();
+
+        if (playerAnimator == null)
+        {
+            Debug.LogWarning("Aucun Animator trouvé sur le GameObject !");
+        }
     }
 
     void Update()
     {
-        if (Cac.isGrounded)
+        HandleMovement();
+        HandleCameraControl();
+    }
+
+    void HandleMovement()
+    {
+        if (characterController.isGrounded)
         {
-            moveD = new Vector3(0, 0, Input.GetAxis("Vertical"));
-            moveD = transform.TransformDirection(moveD);
-            moveD *= speed;
+            float moveHorizontal = Input.GetAxis("Horizontal");
+            float moveVertical = Input.GetAxis("Vertical");
 
-         if (Input.GetButton("Jump"))
+            moveDirection = new Vector3(moveHorizontal, 0, moveVertical);
+            moveDirection = transform.TransformDirection(moveDirection) * speed;
+
+            // Mettre à jour les animations uniquement si les paramètres existent
+            if (playerAnimator != null)
             {
-                moveD.y = Jumpspeed;
-            }                       
+                if (playerAnimator.HasParameter("MoveSpeed"))
+                {
+                    playerAnimator.SetFloat("MoveSpeed", moveDirection.magnitude);
+                }
+            }
         }
-        moveD.y -= gravity * Time.deltaTime;
-        transform.Rotate(Vector3.up * Input.GetAxis("Horizontal") * Time.deltaTime * speed * 10);
 
-        Cac.Move(moveD * Time.deltaTime);
+        moveDirection.y -= gravity * Time.deltaTime;
+        characterController.Move(moveDirection * Time.deltaTime);
+    }
+
+    void HandleCameraControl()
+    {
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        transform.Rotate(0, mouseX, 0);
+    }
+}
+
+public static class AnimatorExtensions
+{
+    public static bool HasParameter(this Animator animator, string paramName)
+    {
+        foreach (var param in animator.parameters)
+        {
+            if (param.name == paramName)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
