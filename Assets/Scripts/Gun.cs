@@ -34,7 +34,7 @@ public class Gun : MonoBehaviour
         // Empêcher de tirer pendant le rechargement
         if (isReloading) return;
 
-        if (Input.GetMouseButtonDown(0) && currentAmmo > 0)
+        if ((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Q)) && currentAmmo > 0)
         {
             Shoot();
         }

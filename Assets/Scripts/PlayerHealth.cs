@@ -35,8 +35,7 @@ public class PlayerHealth : MonoBehaviour
 
         currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
 
-        
-
+        // Mettre à jour la barre de santé seulement si elle existe
         if (healthBar != null)
         {
             healthBar.SetSlider(currentHealth);
@@ -47,6 +46,7 @@ public class PlayerHealth : MonoBehaviour
             Die();
         }
     }
+
 
     public void HealFull()
     {
