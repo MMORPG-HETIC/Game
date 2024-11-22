@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public int maxHealth = 100;
-    private int currentHealth;
+    public int maxHealth = 100; // Points de vie maximum de l'ennemi
+    private int currentHealth; // Points de vie actuels de l'ennemi
 
     void Start()
     {
