@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int maxHealth = 100; // Vie maximale du joueur
+    public int maxHealth = 150; // Vie maximale du joueur
     private int currentHealth;
     public HealthBar healthBar;
     public Animator animator;
