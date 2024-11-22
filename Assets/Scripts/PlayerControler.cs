@@ -2,9 +2,16 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 6f;
-    public float gravity = 20f;
-    public float mouseSensitivity = 150f;
+    [Header("Player Movement Configuration")]
+    public float speed = 6f; // Vitesse de déplacement du joueur
+    public float gravity = 20f; // Gravité appliquée au joueur
+    public float mouseSensitivity = 150f; // Sensibilité de la caméra avec la souris
+    public float keyboardSensitivity = 100f; // Sensibilité de la caméra avec les touches
+
+    [Header("Shooting Configuration")]
+    public Transform bulletSpawnPoint; // Point de départ des projectiles
+    public GameObject bulletPrefab; // Préfabriqué de la balle
+    public float bulletSpeed = 10f; // Vitesse de la balle
 
     private Vector3 moveDirection = Vector3.zero;
     private CharacterController characterController;
@@ -27,6 +34,7 @@ public class PlayerController : MonoBehaviour
         HandleCameraControl();
     }
 
+    // Gère le mouvement du joueur
     void HandleMovement()
     {
         if (characterController.isGrounded)
@@ -38,26 +46,42 @@ public class PlayerController : MonoBehaviour
             moveDirection = transform.TransformDirection(moveDirection) * speed;
 
             // Mettre à jour les animations uniquement si les paramètres existent
-            if (playerAnimator != null)
+            if (playerAnimator != null && playerAnimator.HasParameter("MoveSpeed"))
             {
-                if (playerAnimator.HasParameter("MoveSpeed"))
-                {
-                    playerAnimator.SetFloat("MoveSpeed", moveDirection.magnitude);
-                }
+                playerAnimator.SetFloat("MoveSpeed", moveDirection.magnitude);
             }
         }
 
+        // Appliquer la gravité
         moveDirection.y -= gravity * Time.deltaTime;
+
+        // Déplacer le joueur
         characterController.Move(moveDirection * Time.deltaTime);
     }
 
+    // Gère le contrôle de la caméra
     void HandleCameraControl()
     {
+        // Contrôle de la caméra avec la souris
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+
+        // Contrôle de la caméra avec les touches directionnelles ou numériques
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.Keypad4))
+        {
+            mouseX -= keyboardSensitivity * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.Keypad6))
+        {
+            mouseX += keyboardSensitivity * Time.deltaTime;
+        }
+
+        // Appliquer la rotation
         transform.Rotate(0, mouseX, 0);
     }
+
 }
 
+// Extension pour vérifier si un paramètre Animator existe
 public static class AnimatorExtensions
 {
     public static bool HasParameter(this Animator animator, string paramName)
