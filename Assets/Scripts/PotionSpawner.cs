@@ -16,6 +16,13 @@ public class PotionSpawner : MonoBehaviour
 
     void Start()
     {
+        // Vérifier que le préfabriqué est assigné
+        if (potionPrefab == null)
+        {
+            Debug.LogError("PotionPrefab n'est pas assigné dans l'inspecteur !");
+            return;
+        }
+
         // Lancer le spawn automatique
         InvokeRepeating(nameof(SpawnPotion), 0f, spawnInterval);
     }
@@ -30,10 +37,21 @@ public class PotionSpawner : MonoBehaviour
 
         // Instancier la potion
         GameObject spawnedPotion = Instantiate(potionPrefab, randomPosition, Quaternion.identity);
-        currentPotionCount++;
+
+        // Vérifier si le préfabriqué contient bien le script PotionHealth
+        PotionHealth potionHealth = spawnedPotion.GetComponent<PotionHealth>();
+        if (potionHealth == null)
+        {
+            Debug.LogError($"Le préfabriqué {potionPrefab.name} n'a pas de composant PotionHealth !");
+            Destroy(spawnedPotion);
+            return;
+        }
 
         // Ajouter un événement pour réduire le compteur quand la potion est utilisée
-        spawnedPotion.GetComponent<PotionHealth>().OnPotionUsed += HandlePotionUsed;
+        potionHealth.OnPotionUsed += HandlePotionUsed;
+
+        // Incrémenter le compteur de potions actives
+        currentPotionCount++;
 
         Debug.Log($"Potion générée à {randomPosition}");
     }
