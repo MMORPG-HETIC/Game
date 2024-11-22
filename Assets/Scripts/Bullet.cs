@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public int damageAmount = 20; // Dégâts infligés
-    private ScoreManager scoreManager;
+    public int damageAmount = 20; // Quantité de dégâts infligés par le projectile
+    private ScoreManager scoreManager; // Référence au gestionnaire de score
 
     void Start()
     {

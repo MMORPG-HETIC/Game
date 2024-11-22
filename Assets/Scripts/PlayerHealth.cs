@@ -6,6 +6,7 @@ public class PlayerHealth : MonoBehaviour
     public int maxHealth = 100; // Santé maximale
     private int currentHealth; // Santé actuelle
     public GameObject gameOverCanvas; // Canvas pour le joueur principal
+
     public Animator animator;
 
     [HideInInspector]

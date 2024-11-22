@@ -2,12 +2,9 @@ using UnityEngine;
 
 public class ZombieAttack : MonoBehaviour
 {
-    [Header("Zombie Attack Configuration")]
-    public int damagePerAttack = 20;
-    public float attackRange = 2f;
-    public float attackCooldown = 0.5f;
+    public int damageAmount = 3; // Montant des dégâts infligés au joueur
+    public float attackRange = 3f; // Portée de l'attaque
 
-    private PlayerHealth playerHealth;
     private GameObject player;
     private float lastAttackTime;
 
