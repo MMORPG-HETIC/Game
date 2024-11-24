@@ -5,12 +5,12 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 100; // Vie maximale du joueur
-    private int currentHealth;
+    public int currentHealth;
     public HealthBar healthBar;
     public Animator animator;
     public GameObject gameOverCanvas; // Référence à l'écran Game Over dans la scène
 
-    private bool isDead = false;
+    public bool isDead = false;
 
     void Start()
     {

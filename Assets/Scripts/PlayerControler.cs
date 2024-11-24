@@ -11,6 +11,15 @@ public class PlayerControler : MonoBehaviour
     private Vector3 moveD = Vector3.zero;
     CharacterController Cac;
 
+    void Awake()
+    {
+        // Desactiver mon objet si je ne suis pas le serveur
+        if (Globals.IsServer)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
     void Start()
     {
         Cac = GetComponent<CharacterController>();
