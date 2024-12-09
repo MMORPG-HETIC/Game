@@ -5,12 +5,12 @@ public class PotionSpawner : MonoBehaviour
     [Header("Potion Configuration")]
     public GameObject potionPrefab; // Le préfabriqué de la potion à générer
     public int maxPotions = 10; // Nombre maximum de potions sur la carte
-    public float spawnRadius = 5f; // Rayon de la zone de spawn
     public float spawnInterval = 10f; // Temps entre chaque tentative de spawn (en secondes)
 
     [Header("Spawn Area Configuration")]
-    public Vector3 spawnCenter = Vector3.zero; // Centre de la zone de spawn
-    public float spawnHeight = 0f; // Hauteur à laquelle les potions apparaissent
+    public Transform spawnCenter; // Transform définissant le centre de la zone de spawn
+    public Vector3 spawnAreaSize = new Vector3(10, 0, 10); // Taille de la zone de spawn
+    public float spawnHeight = 10f; // Hauteur initiale pour le raycast
 
     private int currentPotionCount = 0; // Nombre de potions actuellement actives
 
@@ -23,6 +23,12 @@ public class PotionSpawner : MonoBehaviour
             return;
         }
 
+        if (spawnCenter == null)
+        {
+            Debug.LogError("Le spawnCenter n'est pas assigné dans l'inspecteur !");
+            return;
+        }
+
         // Lancer le spawn automatique
         InvokeRepeating(nameof(SpawnPotion), 0f, spawnInterval);
     }
@@ -32,11 +38,11 @@ public class PotionSpawner : MonoBehaviour
         // Vérifier si le nombre de potions est déjà au maximum
         if (currentPotionCount >= maxPotions) return;
 
-        // Générer une position aléatoire dans le rayon défini
-        Vector3 randomPosition = GetRandomSpawnPosition();
+        // Générer une position dans la zone définie
+        Vector3 spawnPosition = GetGroundedSpawnPosition();
 
         // Instancier la potion
-        GameObject spawnedPotion = Instantiate(potionPrefab, randomPosition, Quaternion.identity);
+        GameObject spawnedPotion = Instantiate(potionPrefab, spawnPosition, Quaternion.identity);
 
         // Vérifier si le préfabriqué contient bien le script PotionHealth
         PotionHealth potionHealth = spawnedPotion.GetComponent<PotionHealth>();
@@ -53,14 +59,27 @@ public class PotionSpawner : MonoBehaviour
         // Incrémenter le compteur de potions actives
         currentPotionCount++;
 
-        Debug.Log($"Potion générée à {randomPosition}");
+        Debug.Log($"Potion générée à {spawnPosition}");
     }
 
-    private Vector3 GetRandomSpawnPosition()
+    private Vector3 GetGroundedSpawnPosition()
     {
-        // Générer une position aléatoire dans un cercle et l'appliquer autour du spawnCenter
-        Vector2 randomCircle = Random.insideUnitCircle * spawnRadius;
-        return new Vector3(spawnCenter.x + randomCircle.x, spawnHeight, spawnCenter.z + randomCircle.y);
+        // Calculer une position aléatoire dans la zone définie
+        Vector3 randomOffset = new Vector3(
+            Random.Range(-spawnAreaSize.x / 2, spawnAreaSize.x / 2),
+            spawnHeight,
+            Random.Range(-spawnAreaSize.z / 2, spawnAreaSize.z / 2)
+        );
+
+        Vector3 spawnPosition = spawnCenter.position + randomOffset;
+
+        // Ajuster la hauteur pour positionner sur le sol (si applicable)
+        if (Physics.Raycast(spawnPosition, Vector3.down, out RaycastHit hit, Mathf.Infinity))
+        {
+            spawnPosition.y = hit.point.y;
+        }
+
+        return spawnPosition;
     }
 
     private void HandlePotionUsed()
