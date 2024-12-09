@@ -11,6 +11,7 @@ public class PlayerAttribute : MonoBehaviour
     private void Start()
     {
         clientManager = FindFirstObjectByType<ClientManager>();
+        playerFinder = FindFirstObjectByType<PlayerFinder>();
     }
 
     private void Update()
