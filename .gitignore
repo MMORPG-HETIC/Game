@@ -7,16 +7,13 @@
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
 
-
 Assets/imports
 Assets/Potions
 Assets/Materials
 Assets/Player
-Assets/Prefabs
 Assets/sound
 Assets/Terrain
 Assets/Assets.zip
-
 
 # Auto-generated files
 *.csproj
