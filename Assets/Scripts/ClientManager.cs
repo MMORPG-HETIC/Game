@@ -8,12 +8,12 @@ public class ClientManager : MonoBehaviour
     public int ServerPort = 25000;
 
     private float NextCoucouTimeout = -1;
-    private float SendPositionTimeout = -1;
     private IPEndPoint ServerEndpoint;
     private string id;
     private GameObject Player;
     private GameObject Zombie;
     public PlayerSpawner playerSpawner;
+    private PlayerFinder playerFinder;
 
     void Awake() {
         // Desactiver mon objet si je ne suis pas le client
@@ -34,27 +34,28 @@ public class ClientManager : MonoBehaviour
                 sender.Address.ToString() + ":" + sender.Port);
 
             switch (message[0]) {
-                case 0:
+                case 0://checkCoucou
                     NextCoucouTimeout = Time.time + 20;
                     PayloadCheck check = UDP.FromByteArray<PayloadCheck>(message);
                     id = check.id;
+                    playerSpawner.SpawnPlayer(id, true);
+                    GameObject Player = playerFinder.FindPlayerByIP(id);
                     break;
-                case 1:
+                case 1://playersPositions
                     PayloadPlayerStatus playerStatus= UDP.FromByteArray<PayloadPlayerStatus>(message);
-                    //
+                    GameObject ExternalPlayerToMove = playerFinder.FindPlayerByIP(playerStatus.id);
+                    ExternalPlayerToMove.transform.position = playerStatus.GetPosition();
                     break;
-                case 2:
+                case 2://playersSpawner
+                    PayloadSpawnPlayer ExternalPlayerToSpawn = UDP.FromByteArray<PayloadSpawnPlayer>(message);
+                    playerSpawner.SpawnPlayer(ExternalPlayerToSpawn.id, false);
+                    break;
+                case 3://zombiePosition
                     PayloadZombieStatus zombieStatus = UDP.FromByteArray<PayloadZombieStatus>(message);
                     Zombie.transform.position = zombieStatus.GetPosition();
                     break;
             }
         };
-
-
-        playerSpawner.SpawnPlayer();
-        Debug.Log("hello there");
-        Player = GameObject.Find("Player 1");
-        Zombie = GameObject.Find("Zombie_0");
     }
 
     // Update is called once per frame
@@ -65,16 +66,12 @@ public class ClientManager : MonoBehaviour
             UDP.SendUDPBytes(bytes, ServerEndpoint);
             NextCoucouTimeout = Time.time + 0.5f;
         }
+    }
 
-        if (string.IsNullOrEmpty(id)) { return; }
-
-        if (Time.time > SendPositionTimeout)
-        {
-            PayloadPlayerStatus status = new PayloadPlayerStatus { id = id };
-            status.SetPosition(Player.transform.position);
-            byte[] bytesArray = UDP.ObjectToByteArray(1, status);
-            UDP.SendUDPBytes(bytesArray, ServerEndpoint);
-            SendPositionTimeout = Time.time + 0.06f;
-        }
+    public void SendServerUDPMessage<T>(byte type, T obj)
+    {
+        Debug.Log("hello there");
+        byte[] bytes = UDP.ObjectToByteArray(type, obj);
+            UDP.SendUDPBytes(bytes, ServerEndpoint);
     }
 }

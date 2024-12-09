@@ -32,10 +32,11 @@ public class ServerManager : MonoBehaviour
                     + " =>" + message);
                 
                 switch (message[0]) {
-                    case 0:
+                    case 0://getCoucou
                         // Ajouter le client à mon dictionnaire
                         string addr = sender.Address.ToString() + ":" + sender.Port;
-                        if (!Clients.ContainsKey(addr)) {
+                        if (Clients.ContainsKey(addr)) { break; }
+                            if (!Clients.ContainsKey(addr)) {
                             Clients.Add(addr, sender);
                         }
                         Debug.Log("There are " + Clients.Count + " clients present.");
@@ -45,9 +46,10 @@ public class ServerManager : MonoBehaviour
                         UDP.SendUDPBytes(bytes, sender);
 
                         zombieSpawner.SpawnZombie();
-                        playerSpawner.SpawnPlayer();
+                        playerSpawner.SpawnPlayer(addr, false);
+                        BroadcastUDPMessage(2, addr);
                         break;
-                    case 1:
+                    case 1://players positions
                         PayloadPlayerStatus playerstatus = UDP.FromByteArray<PayloadPlayerStatus>(message);
                         BroadcastUDPMessage(1, playerstatus, playerstatus.id);
                         break;

@@ -1,23 +1,27 @@
 ﻿<Properties StartupConfiguration="{DDFBC18F-9396-3137-9CFE-DEB2CDB74636}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PlayerHealth.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/audio.cs">
     <Files>
       <File FileName="Assets/Scripts/Globals.cs" Line="9" Column="1" />
       <File FileName="Assets/Scripts/MenuUI.cs" />
       <File FileName="Assets/Scripts/Animation.cs" />
-      <File FileName="Assets/Scripts/ClientManager.cs" Line="12" Column="39" />
-      <File FileName="Assets/Scripts/ServerManager.cs" />
-      <File FileName="Assets/Scripts/UDPService.cs" />
-      <File FileName="Assets/Scripts/Zombie.cs" Line="52" Column="1" />
-      <File FileName="Assets/Scripts/PayloadPlayerStatus.cs" />
-      <File FileName="Assets/Scripts/ScoreManager.cs" />
-      <File FileName="Assets/Scripts/PayloadCheck.cs" />
-      <File FileName="Assets/Scripts/PayloadZombieStatus.cs" />
+      <File FileName="Assets/Scripts/ClientManager.cs" Line="40" Column="35" />
+      <File FileName="Assets/Scripts/ServerManager.cs" Line="38" Column="66" />
+      <File FileName="Assets/Scripts/UDPService.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Zombie.cs" Line="87" Column="121" />
+      <File FileName="Assets/Scripts/PayloadPlayerStatus.cs" Line="4" Column="14" />
+      <File FileName="Assets/Scripts/ScoreManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/PayloadCheck.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/PayloadZombieStatus.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Zombiesound.cs" />
-      <File FileName="Assets/Scripts/Bullet.cs" />
-      <File FileName="Assets/Scripts/PlayerControler.cs" Line="12" Column="29" />
-      <File FileName="Assets/Scripts/PlayerSpawner.cs" />
-      <File FileName="Assets/Scripts/ZombieSpawner.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/PlayerHealth.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Bullet.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/PlayerControler.cs" Line="5" Column="5" />
+      <File FileName="Assets/Scripts/PlayerSpawner.cs" Line="37" Column="10" />
+      <File FileName="Assets/Scripts/ZombieSpawner.cs" />
+      <File FileName="Assets/Scripts/PlayerHealth.cs" Line="8" Column="30" />
+      <File FileName="Assets/Scripts/PlayerAttribute.cs" Line="13" Column="64" />
+      <File FileName="Assets/Scripts/PayloadSpawnPlayer.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/FindPlayerByIP.cs" Line="7" Column="74" />
+      <File FileName="Assets/Scripts/audio.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -25,7 +29,7 @@
           <Node name="Game" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
-                <Node name="PlayerHealth.cs" selected="True" />
+                <Node name="audio.cs" selected="True" />
               </Node>
             </Node>
           </Node>
@@ -35,7 +39,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="337b106f-018f-4028-9b17-09062ffee38b" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="f44b15a0-f17a-4f35-acf5-578e377c12fe" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
