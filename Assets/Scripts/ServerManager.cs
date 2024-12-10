@@ -70,14 +70,21 @@ public class ServerManager : MonoBehaviour
                         BroadcastUDPMessage(2, spawn, addr);
                         break;
                     case 3://players positions
+
                         PayloadPlayerStatus playerStatus = UDP.FromByteArray<PayloadPlayerStatus>(message);
                         GameObject playerToMove = playerFinder.FindPlayerByID(playerStatus.id);
-                        if (!playerToMove)
+                        Vector3 targetPosition = playerStatus.GetPosition();
+                        Quaternion targetRotation = playerStatus.GetRotation();
+
+                        playerToMove.transform.position = Vector3.Lerp(playerToMove.transform.position, targetPosition, Time.deltaTime * 10f);
+                        playerToMove.transform.rotation = Quaternion.Lerp(playerToMove.transform.rotation, targetRotation, Time.deltaTime * 10f);
+                        Animator animator = playerToMove.GetComponent<Animator>();
+                        if (animator != null)
                         {
-                            Debug.Log("No player in ServerManager ligne 75 with id : " + playerStatus.id);
-                            return;
+                            animator.SetBool("isMoving", playerStatus.isMoving);
                         }
-                        playerToMove.transform.position = playerStatus.GetPosition();
+
+                        //playerToMove.transform.position = playerStatus.GetPosition();
                         BroadcastUDPMessage(3, playerStatus, playerStatus.id);
                         break;
                 }
