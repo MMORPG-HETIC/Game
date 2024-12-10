@@ -56,8 +56,9 @@ public class ServerManager : MonoBehaviour
                         playerSpawner.SpawnPlayer(addr, false);
                         foreach (KeyValuePair<string, IPEndPoint> client in Clients)
                         {
+                            PayloadSpawnPlayer spawnExternal = new PayloadSpawnPlayer { id = client.Key };
                             if (client.Value == sender) { return; }
-                            byte[] bytesSpawnExternal = UDP.ObjectToByteArray(2, spawn);
+                            byte[] bytesSpawnExternal = UDP.ObjectToByteArray(2, spawnExternal);
                             UDP.SendUDPBytes(bytes, sender);
                         }
                         BroadcastUDPMessage(2, addr);
