@@ -18,18 +18,20 @@ public class Bullet : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        // Vérifie si la balle touche un ennemi
-        Enemy enemy = collision.gameObject.GetComponent<Enemy>();
-        if (enemy != null && collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy"))
         {
-            // Infliger des dégâts et incrémenter le score si l'ennemi est tué
-            if (enemy.TakeDamage(damageAmount) && scoreManager != null)
+            Enemy enemy = collision.gameObject.GetComponent<Enemy>();
+            if (enemy != null && collision.gameObject.CompareTag("Enemy"))
             {
-                scoreManager.IncrementScore();
+                // Infliger des dégâts et incrémenter le score si l'ennemi est tué
+                if (enemy.TakeDamage(damageAmount) && scoreManager != null)
+                {
+                    scoreManager.IncrementScore();
+                }
             }
-        }
 
-        // Détruire la balle après la collision
-        Destroy(gameObject, 0.5f);
+            // Détruire la balle après la collision
+            Destroy(gameObject, 0.5f);
+        }
     }
 }
