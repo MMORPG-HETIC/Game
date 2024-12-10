@@ -58,7 +58,8 @@ public class ClientManager : MonoBehaviour
                     if (animator != null)
                     {
                         Debug.Log("animator not null and isMoving: " + playerStatus.GetIsMoving());
-                        animator.SetBool("isWalking", playerStatus.GetIsMoving());
+                        animator.SetFloat("walk", playerStatus.GetIsMoving() ? 1f : 0f);
+                        animator.SetBool("isBacking", false);
                     }
                     //ExternalPlayerToMove.transform.position = playerStatus.GetPosition();
                     break;
