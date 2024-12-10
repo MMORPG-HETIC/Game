@@ -73,15 +73,13 @@ public class ServerManager : MonoBehaviour
 
                         PayloadPlayerStatus playerStatus = UDP.FromByteArray<PayloadPlayerStatus>(message);
                         GameObject playerToMove = playerFinder.FindPlayerByID(playerStatus.id);
-                        Vector3 targetPosition = playerStatus.GetPosition();
-                        Quaternion targetRotation = playerStatus.GetRotation();
 
-                        playerToMove.transform.position = Vector3.Lerp(playerToMove.transform.position, targetPosition, Time.deltaTime * 10f);
-                        playerToMove.transform.rotation = Quaternion.Lerp(playerToMove.transform.rotation, targetRotation, Time.deltaTime * 10f);
-                        Animator animator = playerToMove.GetComponent<Animator>();
-                        if (animator != null)
+                        playerToMove.transform.position = playerStatus.GetPosition();
+                        playerToMove.transform.rotation = playerStatus.GetRotation();
+                        AnimationController animationController = playerToMove.GetComponent<AnimationController>();
+                        if (animationController != null)
                         {
-                            animator.SetBool("isMoving", playerStatus.isMoving);
+                            animationController.UpdateMovementFromServer(playerStatus.isMoving);
                         }
 
                         //playerToMove.transform.position = playerStatus.GetPosition();

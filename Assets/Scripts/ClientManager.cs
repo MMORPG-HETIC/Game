@@ -52,15 +52,12 @@ public class ClientManager : MonoBehaviour
                 case 3://playersPositions
                     PayloadPlayerStatus playerStatus = UDP.FromByteArray<PayloadPlayerStatus>(message);
                     GameObject ExternalPlayerToMove = playerFinder.FindPlayerByID(playerStatus.id);
-                    Vector3 targetPosition = playerStatus.GetPosition();
-                    Quaternion targetRotation = playerStatus.GetRotation();
-
-                    ExternalPlayerToMove.transform.position = Vector3.Lerp(ExternalPlayerToMove.transform.position, targetPosition, Time.deltaTime * 10f);
-                    ExternalPlayerToMove.transform.rotation = Quaternion.Lerp(ExternalPlayerToMove.transform.rotation, targetRotation, Time.deltaTime * 10f);
-                    Animator animator = ExternalPlayerToMove.GetComponent<Animator>();
-                    if (animator != null)
+                    ExternalPlayerToMove.transform.position = playerStatus.GetPosition();
+                    ExternalPlayerToMove.transform.rotation = playerStatus.GetRotation();
+                    AnimationController animationController = ExternalPlayerToMove.GetComponent<AnimationController>();
+                    if (animationController != null)
                     {
-                        animator.SetBool("isMoving", playerStatus.isMoving);
+                        animationController.UpdateMovementFromServer(playerStatus.isMoving);
                     }
                     //ExternalPlayerToMove.transform.position = playerStatus.GetPosition();
                     break;
