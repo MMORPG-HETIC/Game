@@ -54,10 +54,11 @@ public class ClientManager : MonoBehaviour
                     GameObject ExternalPlayerToMove = playerFinder.FindPlayerByID(playerStatus.id);
                     ExternalPlayerToMove.transform.position = playerStatus.GetPosition();
                     ExternalPlayerToMove.transform.rotation = playerStatus.GetRotation();
-                    AnimationController animationController = ExternalPlayerToMove.GetComponent<AnimationController>();
-                    if (animationController != null)
+                    Animator animator = ExternalPlayerToMove.GetComponent<Animator>();
+                    if (animator != null)
                     {
-                        animationController.UpdateMovementFromServer(playerStatus.isMoving);
+                        Debug.Log("animator not null and isMoving: " + playerStatus.GetIsMoving());
+                        animator.SetBool("isMoving", playerStatus.GetIsMoving());
                     }
                     //ExternalPlayerToMove.transform.position = playerStatus.GetPosition();
                     break;

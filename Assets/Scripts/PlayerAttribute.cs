@@ -7,7 +7,6 @@ public class PlayerAttribute : MonoBehaviour
     public ClientManager clientManager;
     public string ID;
     private float SendPositionTimeout = -1;
-
     private Vector3 previousPosition;
 
     private void Start()
@@ -28,11 +27,9 @@ public class PlayerAttribute : MonoBehaviour
             };
 
             status.SetPosition(transform.position);
-
-
             status.SetRotation(transform.rotation);
 
-            bool isMoving = (transform.position - previousPosition).sqrMagnitude > 0.001f;
+            bool isMoving = (transform.position - previousPosition).sqrMagnitude > 0.0001f;
             status.SetIsMoving(isMoving);
 
             clientManager.SendServerUDPMessage(3, status);
@@ -42,3 +39,4 @@ public class PlayerAttribute : MonoBehaviour
         }
     }
 }
+

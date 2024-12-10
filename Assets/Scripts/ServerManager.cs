@@ -76,13 +76,13 @@ public class ServerManager : MonoBehaviour
 
                         playerToMove.transform.position = playerStatus.GetPosition();
                         playerToMove.transform.rotation = playerStatus.GetRotation();
-                        AnimationController animationController = playerToMove.GetComponent<AnimationController>();
-                        if (animationController != null)
-                        {
-                            animationController.UpdateMovementFromServer(playerStatus.isMoving);
-                        }
 
-                        //playerToMove.transform.position = playerStatus.GetPosition();
+                        Animator animator = playerToMove.GetComponent<Animator>();
+                        if (animator != null)
+                        {
+                            Debug.Log("animator not null and isMoving: " + playerStatus.GetIsMoving());
+                            animator.SetBool("isMoving", playerStatus.GetIsMoving());
+                        }
                         BroadcastUDPMessage(3, playerStatus, playerStatus.id);
                         break;
                 }
