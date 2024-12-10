@@ -1180,7 +1180,6 @@ GameObject:
   - component: {fileID: 1528180985}
   - component: {fileID: 1528180987}
   - component: {fileID: 1528180986}
-  - component: {fileID: 1528180988}
   m_Layer: 0
   m_Name: Terrain
   m_TagString: Untagged
@@ -1405,18 +1404,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundClip: {fileID: 8300000, guid: 3c3e30bc20b033d4d83e249dd1d4fdf5, type: 3}
---- !u!114 &1528180988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1528180981}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36c376a7403288b4bb1b785488d1fa7d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1720629904
 GameObject:
   m_ObjectHideFlags: 0

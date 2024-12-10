@@ -25,6 +25,7 @@ public class ClientManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        playerFinder = GameObject.FindFirstObjectByType<PlayerFinder>();
         UDP.InitClient();
 
         ServerEndpoint = new IPEndPoint(IPAddress.Parse(ServerIP), ServerPort);
@@ -40,17 +41,18 @@ public class ClientManager : MonoBehaviour
                 case 1: //spawnPlayer
                     PayloadSpawnPlayer spawn = UDP.FromByteArray<PayloadSpawnPlayer>(message);
                     id = spawn.id;
-                    playerSpawner.SpawnPlayer(id, true);
+                    GameObject player = playerSpawner.SpawnPlayer(id, true);
                     //GameObject Player = playerFinder.FindPlayerByIP(id);
                     break;
                 case 2://spawnPlayer external
                     PayloadSpawnPlayer ExternalPlayerToSpawn = UDP.FromByteArray<PayloadSpawnPlayer>(message);
-                    Debug.Log("payloadSpawner" + ExternalPlayerToSpawn);
-                    playerSpawner.SpawnPlayer(ExternalPlayerToSpawn.id, false);
+                    Debug.Log("payloadSpawner" + ExternalPlayerToSpawn.id);
+                    GameObject externalPlayer = playerSpawner.SpawnPlayer(ExternalPlayerToSpawn.id, false);
+                    playerFinder.RegisterPlayer(ExternalPlayerToSpawn.id, externalPlayer);
                     break;
                 case 3://playersPositions
                     PayloadPlayerStatus playerStatus = UDP.FromByteArray<PayloadPlayerStatus>(message);
-                    GameObject ExternalPlayerToMove = playerFinder.FindPlayerByIP(playerStatus.id);
+                    GameObject ExternalPlayerToMove = playerFinder.FindPlayerByID(playerStatus.id);
                     ExternalPlayerToMove.transform.position = playerStatus.GetPosition();
                     break;
                 case 4://zombiePosition

@@ -1,19 +1,21 @@
 using UnityEngine;
-
+using System.Collections.Generic;
 public class PlayerFinder : MonoBehaviour
 {
-    public GameObject FindPlayerByIP(string id)
+    public Dictionary<string, GameObject> Players = new Dictionary<string, GameObject>();
+
+    public void RegisterPlayer (string id, GameObject player)
     {
-        PlayerAttribute[] allPlayers = FindObjectsByType<PlayerAttribute>(FindObjectsSortMode.None);
+        Players.Add(id, player);
+    }
 
-        foreach (PlayerAttribute player in allPlayers)
+    public GameObject FindPlayerByID(string id)
+    {
+        if (Players.ContainsKey(id))
         {
-            if (player.ID == id)
-            {
-                return player.gameObject;
-            }
+            return Players[id];
         }
-
+       
         return null;
     }
 }

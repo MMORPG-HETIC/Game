@@ -15,25 +15,33 @@ public class PlayerSpawner : MonoBehaviour
     //    }
     //}
 
-    public void SpawnPlayer(string addr, bool isMe)
+    public GameObject SpawnPlayer(string addr, bool isMe)
     {
         GameObject o = Instantiate(player, spawnPoint.position, spawnPoint.rotation);
-        Camera camera = o.GetComponent<Camera>();
-        if (camera != null && isMe)
+        Transform cameraTransform = o.transform.Find("Main Camera");
+        if (cameraTransform != null && isMe)
         {
-            camera.enabled = true;
+            cameraTransform.gameObject.SetActive(true);
         }
 
         PlayerAttribute playerAttribute = o.AddComponent<PlayerAttribute>();
         playerAttribute.ID = addr;
 
-        PlayerControler playerControler = o.GetComponent<PlayerControler>();
         //Bullet bullet = o.GetComponent<Bullet>();
 
         if (!isMe)
         {
+            PlayerControler playerControler = o.GetComponent<PlayerControler>();
+            AnimationController animationController = o.GetComponent<AnimationController>();
+            Rigidbody rigidbody = o.GetComponent<Rigidbody>();
+            CharacterController characterController = o.GetComponent<CharacterController>();
             playerControler.enabled = false;
+            animationController.enabled = false;
+            Destroy(rigidbody);
+            Destroy(characterController);
             //bullet.enabled = false;
         }
+
+        return o;
     }
 }

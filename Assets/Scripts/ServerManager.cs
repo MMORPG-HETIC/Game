@@ -11,6 +11,7 @@ public class ServerManager : MonoBehaviour
     private GameObject Zombie;
     public ZombieSpawner zombieSpawner;
     public PlayerSpawner playerSpawner;
+    private PlayerFinder playerFinder;
 
     public Dictionary<string, IPEndPoint> Clients = new Dictionary<string, IPEndPoint>(); 
 
@@ -23,6 +24,7 @@ public class ServerManager : MonoBehaviour
 
     void Start()
     {
+        playerFinder = GameObject.FindFirstObjectByType<PlayerFinder>();
         UDP.Listen(ListenPort);
 
         UDP.OnMessageReceived +=  
@@ -53,7 +55,10 @@ public class ServerManager : MonoBehaviour
                         UDP.SendUDPBytes(bytes, sender);
 
                         //zombieSpawner.SpawnZombie();
-                        playerSpawner.SpawnPlayer(addr, false);
+                        GameObject playerSpawned = playerSpawner.SpawnPlayer(addr, false);
+                        playerFinder.RegisterPlayer(addr, playerSpawned);
+
+
                         //foreach (KeyValuePair<string, IPEndPoint> client in Clients)
                         //{
                         //    if (client.Key == addr) { return; }
@@ -64,8 +69,11 @@ public class ServerManager : MonoBehaviour
                         BroadcastUDPMessage(2, spawn, addr);
                         break;
                     case 3://players positions
-                        PayloadPlayerStatus playerstatus = UDP.FromByteArray<PayloadPlayerStatus>(message);
-                        BroadcastUDPMessage(3, playerstatus, playerstatus.id);
+                        PayloadPlayerStatus playerStatus = UDP.FromByteArray<PayloadPlayerStatus>(message);
+                        Debug.Log("send my position to all from : " + sender.Address.ToString() + ":" + sender.Port);
+                        GameObject playerToMove = playerFinder.FindPlayerByID(playerStatus.id);
+                        playerToMove.transform.position = playerStatus.GetPosition();
+                        BroadcastUDPMessage(3, playerStatus, playerStatus.id);
                         break;
                 }
             };
