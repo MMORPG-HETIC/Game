@@ -12,6 +12,7 @@ public class ServerManager : MonoBehaviour
     public ZombieSpawner zombieSpawner;
     public PlayerSpawner playerSpawner;
     private PlayerFinder playerFinder;
+    private ZombieFinder zombieFinder;
 
     public Dictionary<string, IPEndPoint> Clients = new Dictionary<string, IPEndPoint>(); 
 
@@ -25,6 +26,7 @@ public class ServerManager : MonoBehaviour
     void Start()
     {
         playerFinder = GameObject.FindFirstObjectByType<PlayerFinder>();
+        zombieFinder = GameObject.FindFirstObjectByType<ZombieFinder>();
         UDP.Listen(ListenPort);
 
         UDP.OnMessageReceived +=  
@@ -54,9 +56,10 @@ public class ServerManager : MonoBehaviour
                         byte[] bytes = UDP.ObjectToByteArray(1, spawn);
                         UDP.SendUDPBytes(bytes, sender);
 
-                        //zombieSpawner.SpawnZombie();
                         GameObject playerSpawned = playerSpawner.SpawnPlayer(addr, false);
+                        GameObject zombieSpawned = zombieSpawner.SpawnZombie(addr);
                         playerFinder.RegisterPlayer(addr, playerSpawned);
+                        zombieFinder.RegisterZombie(addr, zombieSpawned);
 
 
                         foreach (KeyValuePair<string, IPEndPoint> client in Clients)
@@ -67,7 +70,11 @@ public class ServerManager : MonoBehaviour
                                 UDP.SendUDPBytes(bytesSpawnExternal, sender);
                             }
                         }
+
                         BroadcastUDPMessage(2, spawn, addr);
+
+                        PayloadZombieSpawn spawnZombie = new PayloadZombieSpawn { id = addr };
+                        BroadcastUDPMessage(4, spawnZombie);
                         break;
                     case 3://players positions
 

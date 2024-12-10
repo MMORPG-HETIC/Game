@@ -14,13 +14,13 @@ public class Zombie : MonoBehaviour
     private PlayerHealth playerHealth;
     private float lastAttackTime;
 
-    private void Awake()
-    {
-        if (!Globals.IsServer)
-        {
-            gameObject.SetActive(false);
-        }
-    }
+    //private void Awake()
+    //{
+    //    if (!Globals.IsServer)
+    //    {
+    //        gameObject.SetActive(false);
+    //    }
+    //}
 
     void Start()
     {

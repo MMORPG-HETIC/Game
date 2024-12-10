@@ -13,7 +13,9 @@ public class ClientManager : MonoBehaviour
     private GameObject Player;
     private GameObject Zombie;
     public PlayerSpawner playerSpawner;
+    public ZombieSpawner zombieSpawner;
     private PlayerFinder playerFinder;
+    private ZombieFinder zombieFinder;
 
     void Awake() {
         // Desactiver mon objet si je ne suis pas le client
@@ -26,6 +28,7 @@ public class ClientManager : MonoBehaviour
     void Start()
     {
         playerFinder = GameObject.FindFirstObjectByType<PlayerFinder>();
+        zombieFinder = GameObject.FindFirstObjectByType<ZombieFinder>();
         UDP.InitClient();
 
         ServerEndpoint = new IPEndPoint(IPAddress.Parse(ServerIP), ServerPort);
@@ -63,7 +66,13 @@ public class ClientManager : MonoBehaviour
                     }
                     //ExternalPlayerToMove.transform.position = playerStatus.GetPosition();
                     break;
-                case 4://zombiePosition
+                case 4://zombieSpawn
+                    PayloadZombieSpawn zombieSpawn = UDP.FromByteArray<PayloadZombieSpawn>(message);
+                    Debug.Log("zombie id to spawn : " + zombieSpawn.id);
+                    GameObject zombieSpawned = zombieSpawner.SpawnZombie(zombieSpawn.id);
+                    zombieFinder.RegisterZombie(zombieSpawn.id, zombieSpawned);
+                    break;
+                case 5://zombiePosition
                     PayloadZombieStatus zombieStatus = UDP.FromByteArray<PayloadZombieStatus>(message);
                     Zombie.transform.position = zombieStatus.GetPosition();
                     break;
