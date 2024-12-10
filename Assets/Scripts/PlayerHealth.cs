@@ -3,16 +3,16 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour
 {
     [Header("Player Health Configuration")]
-    public int maxHealth = 100; // Santé maximale
-    private int currentHealth; // Santé actuelle
-    public GameObject gameOverCanvas; // Canvas pour le joueur principal
+    public int maxHealth = 100;
+    private int currentHealth;
+    private GameObject gameOverCanvas; // Canvas pour le joueur principal
     public Animator animator;
 
     [HideInInspector]
-    public HealthBar healthBar; // Barre de santé pour le joueur principal
+    public HealthBar healthBar;
 
     private bool isDead;
-    private bool isMainPlayer; // Indique si ce joueur est le joueur principal
+    private bool isMainPlayer;
 
     public int CurrentHealth => currentHealth;
 
@@ -32,17 +32,18 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    public void Initialize(bool isMainPlayer, HealthBar healthBar = null)
+    public void Initialize(bool isMainPlayer, HealthBar healthBar = null, GameObject gameOverCanvas = null)
     {
         this.isMainPlayer = isMainPlayer;
 
-        if (isMainPlayer && healthBar != null)
+        if (isMainPlayer)
         {
             this.healthBar = healthBar;
+            this.gameOverCanvas = gameOverCanvas;
         }
 
-        currentHealth = maxHealth; // S'assurer que la santé est initialisée
-        isDead = false; // Réinitialiser l'état de mort
+        currentHealth = maxHealth;
+        isDead = false;
     }
 
     public void TakeDamage(int damage)
@@ -62,7 +63,7 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    public void Heal(int healAmount)
+     public void Heal(int healAmount)
     {
         if (isDead) return;
 
@@ -74,7 +75,7 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    public void HealFull()
+     public void HealFull()
     {
         Heal(maxHealth - currentHealth);
     }
@@ -90,6 +91,19 @@ public class PlayerHealth : MonoBehaviour
             animator.SetTrigger("Die");
         }
 
+        // Détacher la caméra principale
+        Camera mainCamera = Camera.main;
+        if (mainCamera != null && mainCamera.transform.parent == transform)
+        {
+            mainCamera.transform.SetParent(null); // Détache la caméra
+            ThirdPersonOrbitCamBasic camScript = mainCamera.GetComponent<ThirdPersonOrbitCamBasic>();
+            if (camScript != null)
+            {
+                camScript.player = null; // Retire la cible pour éviter l'erreur
+            }
+        }
+
+        // Activer le GameOver Canvas
         if (isMainPlayer && gameOverCanvas != null)
         {
             gameOverCanvas.SetActive(true);
@@ -97,7 +111,7 @@ public class PlayerHealth : MonoBehaviour
 
         Debug.Log($"{name} est mort.");
 
-        Destroy(gameObject, 2f);
+        Destroy(gameObject);
     }
 
     public bool IsDead()

@@ -10,31 +10,43 @@ public class PlayerSpawner : MonoBehaviour
     public Vector3 spawnAreaSize = new Vector3(20, 0, 20);
     public int numberOfAIPlayers = 3;
 
+    private GameObject gameOverCanvas; // Canvas du GameOver
     private GameObject controllablePlayer;
     private List<GameObject> aiPlayers = new List<GameObject>();
 
-    void Start()
+   void Start()
+{
+    // Vérifications initiales
+    if (spawnCenter == null || playerPrefab == null || aiPrefab == null)
     {
-        if (spawnCenter == null)
-        {
-            Debug.LogError("Le spawnCenter n'est pas assigné dans l'inspecteur. Assurez-vous de le configurer.");
-            return;
-        }
-
-        if (playerPrefab == null)
-        {
-            Debug.LogError("Le playerPrefab n'est pas assigné dans l'inspecteur. Assurez-vous de le configurer.");
-            return;
-        }
-
-        if (aiPrefab == null)
-        {
-            Debug.LogError("Le aiPrefab n'est pas assigné dans l'inspecteur. Assurez-vous de le configurer.");
-            return;
-        }
-
-        SpawnPlayers();
+        Debug.LogError("Certains objets ne sont pas assignés dans l'inspecteur !");
+        return;
     }
+
+    // Trouver le GameOver Canvas dans la hiérarchie du Canvas parent
+    Transform canvasTransform = GameObject.Find("Canvas")?.transform;
+    if (canvasTransform != null)
+    {
+        Transform gameOverTransform = canvasTransform.Find("gameOverCanvas");
+        if (gameOverTransform != null)
+        {
+            gameOverCanvas = gameOverTransform.gameObject;
+            gameOverCanvas.SetActive(false); // Désactiver au début
+            Debug.Log("GameOverCanvas trouvé et désactivé.");
+        }
+        else
+        {
+            Debug.LogError("GameOverCanvas introuvable dans le Canvas !");
+        }
+    }
+    else
+    {
+        Debug.LogError("Canvas introuvable dans la scène !");
+    }
+
+    SpawnPlayers();
+}
+
 
     void SpawnPlayers()
     {
@@ -56,7 +68,7 @@ public class PlayerSpawner : MonoBehaviour
     {
         Vector3 randomOffset = new Vector3(
             Random.Range(-spawnAreaSize.x / 2, spawnAreaSize.x / 2),
-            10, // Hauteur initiale pour le raycast
+            10,
             Random.Range(-spawnAreaSize.z / 2, spawnAreaSize.z / 2)
         );
 
@@ -64,7 +76,7 @@ public class PlayerSpawner : MonoBehaviour
 
         if (Physics.Raycast(spawnPosition, Vector3.down, out RaycastHit hit, Mathf.Infinity))
         {
-            spawnPosition.y = hit.point.y; // Positionner sur le sol
+            spawnPosition.y = hit.point.y;
         }
 
         return spawnPosition;
@@ -77,13 +89,22 @@ public class PlayerSpawner : MonoBehaviour
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
         if (playerHealth != null)
         {
-            playerHealth.Initialize(true, Object.FindFirstObjectByType<HealthBar>()); // Joueur principal
+            // Trouver la HealthBar automatiquement
+            HealthBar healthBar = Object.FindFirstObjectByType<HealthBar>();
+
+            // Passer le GameOver Canvas et la HealthBar au joueur
+            playerHealth.Initialize(true, healthBar, gameOverCanvas);
+            Debug.Log("GameOverCanvas assigné au joueur principal.");
+        }
+        else
+        {
+            Debug.LogError("Le script PlayerHealth est introuvable sur le joueur.");
         }
 
         PlayerController controller = player.GetComponent<PlayerController>();
         if (controller != null)
         {
-            controller.enabled = true; // Activer le contrôle utilisateur
+            controller.enabled = true;
         }
     }
 
@@ -99,18 +120,12 @@ public class PlayerSpawner : MonoBehaviour
         }
 
         playerHealth.maxHealth = Random.Range(50, 150);
-        playerHealth.Initialize(false); // IA
+        playerHealth.Initialize(false);
 
         AIPlayerMovement aiMovement = aiPlayer.GetComponent<AIPlayerMovement>();
         if (aiMovement == null)
         {
             aiPlayer.AddComponent<AIPlayerMovement>();
-        }
-
-        PlayerController controller = aiPlayer.GetComponent<PlayerController>();
-        if (controller != null)
-        {
-            controller.enabled = false; // Désactiver le contrôle utilisateur
         }
     }
 }
