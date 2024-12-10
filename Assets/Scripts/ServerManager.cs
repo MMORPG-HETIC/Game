@@ -54,14 +54,14 @@ public class ServerManager : MonoBehaviour
 
                         //zombieSpawner.SpawnZombie();
                         playerSpawner.SpawnPlayer(addr, false);
-                        foreach (KeyValuePair<string, IPEndPoint> client in Clients)
-                        {
-                            PayloadSpawnPlayer spawnExternal = new PayloadSpawnPlayer { id = client.Key };
-                            if (client.Value == sender) { return; }
-                            byte[] bytesSpawnExternal = UDP.ObjectToByteArray(2, spawnExternal);
-                            UDP.SendUDPBytes(bytes, sender);
-                        }
-                        BroadcastUDPMessage(2, addr);
+                        //foreach (KeyValuePair<string, IPEndPoint> client in Clients)
+                        //{
+                        //    if (client.Key == addr) { return; }
+                        //    PayloadSpawnPlayer spawnExternal = new PayloadSpawnPlayer { id = client.Key };
+                        //    byte[] bytesSpawnExternal = UDP.ObjectToByteArray(2, spawnExternal);
+                        //    UDP.SendUDPBytes(bytes, sender);
+                        //}
+                        BroadcastUDPMessage(2, spawn, addr);
                         break;
                     case 3://players positions
                         PayloadPlayerStatus playerstatus = UDP.FromByteArray<PayloadPlayerStatus>(message);
