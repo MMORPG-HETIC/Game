@@ -54,7 +54,12 @@ public class ServerManager : MonoBehaviour
 
                         //zombieSpawner.SpawnZombie();
                         playerSpawner.SpawnPlayer(addr, false);
-                        SpawnEachPlayer(2, sender, spawn);
+                        foreach (KeyValuePair<string, IPEndPoint> client in Clients)
+                        {
+                            if (client.Value == sender) { return; }
+                            byte[] bytesSpawnExternal = UDP.ObjectToByteArray(2, spawn);
+                            UDP.SendUDPBytes(bytes, sender);
+                        }
                         BroadcastUDPMessage(2, addr);
                         break;
                     case 3://players positions
@@ -82,16 +87,6 @@ public class ServerManager : MonoBehaviour
             if (client.Key == clientId) { return; }
             byte[] bytes = UDP.ObjectToByteArray(type, obj);
             UDP.SendUDPBytes(bytes, client.Value);
-        }
-    }
-
-    public void SpawnEachPlayer(byte type, IPEndPoint sender, PayloadSpawnPlayer spawn)
-    {
-        foreach (KeyValuePair<string, IPEndPoint> client in Clients)
-        {
-            if (client.Value == sender) { return; }
-            byte[] bytes = UDP.ObjectToByteArray(type, spawn);
-            UDP.SendUDPBytes(bytes, sender);
         }
     }
 }
