@@ -393,7 +393,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UDP: {fileID: 1748347830}
-  ServerIP: 127.0.0.1
+  ServerIP: 192.168.43.241
   ServerPort: 25000
   playerSpawner: {fileID: 1231996598}
 --- !u!1 &602902691
@@ -1704,6 +1704,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2113749087}
   - component: {fileID: 2113749088}
+  - component: {fileID: 2113749089}
   m_Layer: 0
   m_Name: ServerManager
   m_TagString: Untagged
@@ -1741,7 +1742,15 @@ MonoBehaviour:
   UDP: {fileID: 1748347830}
   ListenPort: 25000
   zombieSpawner: {fileID: 905556025}
-  playerSpawner: {fileID: 0}
+  playerSpawner: {fileID: 1231996598}
+--- !u!81 &2113749089
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113749086}
+  m_Enabled: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -23,7 +23,7 @@ public class PlayerAttribute : MonoBehaviour
             GameObject Player = playerFinder.FindPlayerByIP(ID);
             PayloadPlayerStatus status = new PayloadPlayerStatus { id = ID };
             status.SetPosition(Player.transform.position);
-            clientManager.SendServerUDPMessage(1, status);
+            clientManager.SendServerUDPMessage(3, status);
             SendPositionTimeout = Time.time + 0.06f;
         }
     }

@@ -7,7 +7,7 @@ public class ServerManager : MonoBehaviour
 {
     public UDPService UDP;
     public int ListenPort = 25000;
-    private float SendZombiePositionTimeout = -1;
+    //private float SendZombiePositionTimeout = -1;
     private GameObject Zombie;
     public ZombieSpawner zombieSpawner;
     public PlayerSpawner playerSpawner;
@@ -29,44 +29,52 @@ public class ServerManager : MonoBehaviour
             (byte[] message, IPEndPoint sender) => {
                 Debug.Log("[SERVER] Message received from " + 
                     sender.Address.ToString() + ":" + sender.Port 
-                    + " =>" + message);
+                    + " =>" + message[0]);
                 
                 switch (message[0]) {
                     case 0://getCoucou
                         // Ajouter le client à mon dictionnaire
                         string addr = sender.Address.ToString() + ":" + sender.Port;
-                        if (Clients.ContainsKey(addr)) { break; }
-                            if (!Clients.ContainsKey(addr)) {
+                        Debug.Log(addr);
+                        PayloadCheck check = new PayloadCheck { id = addr };
+                        byte[] bytesCheck = UDP.ObjectToByteArray(0, check);
+                        UDP.SendUDPBytes(bytesCheck, sender);
+                        if (Clients.ContainsKey(addr))
+                        {
+                            break;
+                        }
+                        if (!Clients.ContainsKey(addr)) {
                             Clients.Add(addr, sender);
                         }
-                        Debug.Log("There are " + Clients.Count + " clients present.");
+                        Debug.Log("There are " + Clients.Count + " clients present. : " + addr);
 
-                        PayloadCheck check = new PayloadCheck { id = addr };
-                        byte[] bytes = UDP.ObjectToByteArray(0, check);
+                        PayloadSpawnPlayer spawn = new PayloadSpawnPlayer { id = addr };
+                        byte[] bytes = UDP.ObjectToByteArray(1, spawn);
                         UDP.SendUDPBytes(bytes, sender);
 
-                        zombieSpawner.SpawnZombie();
+                        //zombieSpawner.SpawnZombie();
                         playerSpawner.SpawnPlayer(addr, false);
+                        SpawnEachPlayer(2, sender, spawn);
                         BroadcastUDPMessage(2, addr);
                         break;
-                    case 1://players positions
+                    case 3://players positions
                         PayloadPlayerStatus playerstatus = UDP.FromByteArray<PayloadPlayerStatus>(message);
-                        BroadcastUDPMessage(1, playerstatus, playerstatus.id);
+                        BroadcastUDPMessage(3, playerstatus, playerstatus.id);
                         break;
                 }
             };
-        Zombie = GameObject.Find("Zombie_0");
+        //Zombie = GameObject.Find("Zombie_0");
     }
 
     void Update()
     {
-        if (Time.time > SendZombiePositionTimeout)
-        {
-            PayloadZombieStatus zombieStatus = new PayloadZombieStatus { id = 0 };
-            zombieStatus.SetPosition(Zombie.transform.position);
-            BroadcastUDPMessage(2, zombieStatus);
-            SendZombiePositionTimeout = Time.time + 0.06f;
-        }
+        //if (Time.time > SendZombiePositionTimeout)
+        //{
+        //    PayloadZombieStatus zombieStatus = new PayloadZombieStatus { id = 0 };
+        //    zombieStatus.SetPosition(Zombie.transform.position);
+        //    BroadcastUDPMessage(2, zombieStatus);
+        //    SendZombiePositionTimeout = Time.time + 0.06f;
+        //}
     }
 
     public void BroadcastUDPMessage<T>(byte type, T obj, string clientId = "") {
@@ -74,6 +82,16 @@ public class ServerManager : MonoBehaviour
             if (client.Key == clientId) { return; }
             byte[] bytes = UDP.ObjectToByteArray(type, obj);
             UDP.SendUDPBytes(bytes, client.Value);
+        }
+    }
+
+    public void SpawnEachPlayer(byte type, IPEndPoint sender, PayloadSpawnPlayer spawn)
+    {
+        foreach (KeyValuePair<string, IPEndPoint> client in Clients)
+        {
+            if (client.Value == sender) { return; }
+            byte[] bytes = UDP.ObjectToByteArray(type, spawn);
+            UDP.SendUDPBytes(bytes, sender);
         }
     }
 }

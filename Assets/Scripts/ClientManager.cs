@@ -31,26 +31,29 @@ public class ClientManager : MonoBehaviour
             
         UDP.OnMessageReceived += (byte[] message, IPEndPoint sender) => {
             Debug.Log("[CLIENT] Message received from " + 
-                sender.Address.ToString() + ":" + sender.Port);
+                sender.Address.ToString() + ":" + sender.Port + "message " + message[0]);
 
             switch (message[0]) {
                 case 0://checkCoucou
                     NextCoucouTimeout = Time.time + 20;
-                    PayloadCheck check = UDP.FromByteArray<PayloadCheck>(message);
-                    id = check.id;
-                    playerSpawner.SpawnPlayer(id, true);
-                    GameObject Player = playerFinder.FindPlayerByIP(id);
                     break;
-                case 1://playersPositions
-                    PayloadPlayerStatus playerStatus= UDP.FromByteArray<PayloadPlayerStatus>(message);
+                case 1: //spawnPlayer
+                    PayloadSpawnPlayer spawn = UDP.FromByteArray<PayloadSpawnPlayer>(message);
+                    id = spawn.id;
+                    playerSpawner.SpawnPlayer(id, true);
+                    //GameObject Player = playerFinder.FindPlayerByIP(id);
+                    break;
+                case 2://spawnPlayer external
+                    PayloadSpawnPlayer ExternalPlayerToSpawn = UDP.FromByteArray<PayloadSpawnPlayer>(message);
+                    Debug.Log("payloadSpawner" + ExternalPlayerToSpawn);
+                    playerSpawner.SpawnPlayer(ExternalPlayerToSpawn.id, false);
+                    break;
+                case 3://playersPositions
+                    PayloadPlayerStatus playerStatus = UDP.FromByteArray<PayloadPlayerStatus>(message);
                     GameObject ExternalPlayerToMove = playerFinder.FindPlayerByIP(playerStatus.id);
                     ExternalPlayerToMove.transform.position = playerStatus.GetPosition();
                     break;
-                case 2://playersSpawner
-                    PayloadSpawnPlayer ExternalPlayerToSpawn = UDP.FromByteArray<PayloadSpawnPlayer>(message);
-                    playerSpawner.SpawnPlayer(ExternalPlayerToSpawn.id, false);
-                    break;
-                case 3://zombiePosition
+                case 4://zombiePosition
                     PayloadZombieStatus zombieStatus = UDP.FromByteArray<PayloadZombieStatus>(message);
                     Zombie.transform.position = zombieStatus.GetPosition();
                     break;
@@ -70,7 +73,6 @@ public class ClientManager : MonoBehaviour
 
     public void SendServerUDPMessage<T>(byte type, T obj)
     {
-        Debug.Log("hello there");
         byte[] bytes = UDP.ObjectToByteArray(type, obj);
             UDP.SendUDPBytes(bytes, ServerEndpoint);
     }

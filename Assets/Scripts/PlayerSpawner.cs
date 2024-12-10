@@ -7,13 +7,13 @@ public class PlayerSpawner : MonoBehaviour
     public Transform spawnPoint;
 
 
-    private void Awake()
-    {
-        if (!Globals.IsServer)
-        {
-            gameObject.SetActive(false);
-        }
-    }
+    //private void Awake()
+    //{
+    //    if (!Globals.IsServer)
+    //    {
+    //        gameObject.SetActive(false);
+    //    }
+    //}
 
     public void SpawnPlayer(string addr, bool isMe)
     {
@@ -28,12 +28,12 @@ public class PlayerSpawner : MonoBehaviour
         playerAttribute.ID = addr;
 
         PlayerControler playerControler = o.GetComponent<PlayerControler>();
-        Bullet bullet = o.GetComponent<Bullet>();
+        //Bullet bullet = o.GetComponent<Bullet>();
 
         if (!isMe)
         {
             playerControler.enabled = false;
-            bullet.enabled = false;
+            //bullet.enabled = false;
         }
     }
 }
