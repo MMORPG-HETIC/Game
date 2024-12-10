@@ -86,6 +86,12 @@ public class ServerManager : MonoBehaviour
                         }
                         BroadcastUDPMessage(3, playerStatus, playerStatus.id);
                         break;
+                    case 9://playerFinder quit
+                        PayloadCheck quit = UDP.FromByteArray<PayloadCheck>(message);
+                        GameObject playerQuit = playerFinder.FindPlayerByID(quit.id);
+                        Destroy(playerQuit);
+                        BroadcastUDPMessage(9, quit, quit.id);
+                        break;
                 }
             };
         //Zombie = GameObject.Find("Zombie_0");

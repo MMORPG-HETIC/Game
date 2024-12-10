@@ -67,6 +67,11 @@ public class ClientManager : MonoBehaviour
                     PayloadZombieStatus zombieStatus = UDP.FromByteArray<PayloadZombieStatus>(message);
                     Zombie.transform.position = zombieStatus.GetPosition();
                     break;
+                case 9://playerFinder quit
+                    PayloadCheck quit = UDP.FromByteArray<PayloadCheck>(message);
+                    GameObject playerQuit = playerFinder.FindPlayerByID(quit.id);
+                    Destroy(playerQuit);
+                    break;
             }
         };
     }
