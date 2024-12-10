@@ -4,8 +4,9 @@ public class PlayerFinder : MonoBehaviour
 {
     public Dictionary<string, GameObject> Players = new Dictionary<string, GameObject>();
 
-    public void RegisterPlayer (string id, GameObject player)
+    public void RegisterPlayer(string id, GameObject player)
     {
+        Debug.Log("register player : " + id);
         Players.Add(id, player);
     }
 
@@ -15,7 +16,7 @@ public class PlayerFinder : MonoBehaviour
         {
             return Players[id];
         }
-       
+
         return null;
     }
 }

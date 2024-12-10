@@ -42,7 +42,6 @@ public class ClientManager : MonoBehaviour
                     PayloadSpawnPlayer spawn = UDP.FromByteArray<PayloadSpawnPlayer>(message);
                     id = spawn.id;
                     GameObject player = playerSpawner.SpawnPlayer(id, true);
-                    //GameObject Player = playerFinder.FindPlayerByIP(id);
                     break;
                 case 2://spawnPlayer external
                     PayloadSpawnPlayer ExternalPlayerToSpawn = UDP.FromByteArray<PayloadSpawnPlayer>(message);

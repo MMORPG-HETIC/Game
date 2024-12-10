@@ -59,19 +59,24 @@ public class ServerManager : MonoBehaviour
                         playerFinder.RegisterPlayer(addr, playerSpawned);
 
 
-                        //foreach (KeyValuePair<string, IPEndPoint> client in Clients)
-                        //{
-                        //    if (client.Key == addr) { return; }
-                        //    PayloadSpawnPlayer spawnExternal = new PayloadSpawnPlayer { id = client.Key };
-                        //    byte[] bytesSpawnExternal = UDP.ObjectToByteArray(2, spawnExternal);
-                        //    UDP.SendUDPBytes(bytes, sender);
-                        //}
+                        foreach (KeyValuePair<string, IPEndPoint> client in Clients)
+                        {
+                            if (client.Key != addr) {
+                                PayloadSpawnPlayer spawnExternal = new PayloadSpawnPlayer { id = client.Key };
+                                byte[] bytesSpawnExternal = UDP.ObjectToByteArray(2, spawnExternal);
+                                UDP.SendUDPBytes(bytesSpawnExternal, sender);
+                            }
+                        }
                         BroadcastUDPMessage(2, spawn, addr);
                         break;
                     case 3://players positions
                         PayloadPlayerStatus playerStatus = UDP.FromByteArray<PayloadPlayerStatus>(message);
-                        Debug.Log("send my position to all from : " + sender.Address.ToString() + ":" + sender.Port);
                         GameObject playerToMove = playerFinder.FindPlayerByID(playerStatus.id);
+                        if (!playerToMove)
+                        {
+                            Debug.Log("No player in ServerManager ligne 75 with id : " + playerStatus.id);
+                            return;
+                        }
                         playerToMove.transform.position = playerStatus.GetPosition();
                         BroadcastUDPMessage(3, playerStatus, playerStatus.id);
                         break;
@@ -93,9 +98,11 @@ public class ServerManager : MonoBehaviour
 
     public void BroadcastUDPMessage<T>(byte type, T obj, string clientId = "") {
         foreach (KeyValuePair<string, IPEndPoint> client in Clients) {
-            if (client.Key == clientId) { return; }
-            byte[] bytes = UDP.ObjectToByteArray(type, obj);
-            UDP.SendUDPBytes(bytes, client.Value);
+            if (client.Key != clientId)
+            {
+                byte[] bytes = UDP.ObjectToByteArray(type, obj);
+                UDP.SendUDPBytes(bytes, client.Value);
+            }
         }
     }
 }
