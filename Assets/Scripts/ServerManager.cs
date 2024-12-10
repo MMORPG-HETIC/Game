@@ -88,8 +88,8 @@ public class ServerManager : MonoBehaviour
                         break;
                     case 9://playerFinder quit
                         PayloadCheck quit = UDP.FromByteArray<PayloadCheck>(message);
-                        GameObject playerQuit = playerFinder.FindPlayerByID(quit.id);
-                        Destroy(playerQuit);
+                        playerFinder.RemovePlayer(quit.id);
+                        Clients.Remove(quit.id);
                         BroadcastUDPMessage(9, quit, quit.id);
                         break;
                 }

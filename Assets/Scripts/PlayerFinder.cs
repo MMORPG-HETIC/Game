@@ -19,4 +19,11 @@ public class PlayerFinder : MonoBehaviour
 
         return null;
     }
+
+    public void RemovePlayer(string id)
+    {
+        GameObject player = FindPlayerByID(id);
+        Players.Remove(id);
+        Destroy(player);
+    }
 }

@@ -69,8 +69,7 @@ public class ClientManager : MonoBehaviour
                     break;
                 case 9://playerFinder quit
                     PayloadCheck quit = UDP.FromByteArray<PayloadCheck>(message);
-                    GameObject playerQuit = playerFinder.FindPlayerByID(quit.id);
-                    Destroy(playerQuit);
+                    playerFinder.RemovePlayer(quit.id);
                     break;
             }
         };
