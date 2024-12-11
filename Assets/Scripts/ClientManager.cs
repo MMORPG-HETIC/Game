@@ -4,8 +4,8 @@ using UnityEngine;
 public class ClientManager : MonoBehaviour
 {
     public UDPService UDP;
-    public string ServerIP = "192.168.43.241";
-    public int ServerPort = 25000;
+    //public string ServerIP = Globals.IPServer;
+    private int ServerPort = 25000;
 
     private float NextCoucouTimeout = -1;
     private IPEndPoint ServerEndpoint;
@@ -31,7 +31,7 @@ public class ClientManager : MonoBehaviour
         zombieFinder = GameObject.FindFirstObjectByType<ZombieFinder>();
         UDP.InitClient();
 
-        ServerEndpoint = new IPEndPoint(IPAddress.Parse(ServerIP), ServerPort);
+        ServerEndpoint = new IPEndPoint(IPAddress.Parse(Globals.IPServer), ServerPort);
             
         UDP.OnMessageReceived += (byte[] message, IPEndPoint sender) => {
             Debug.Log("[CLIENT] Message received from " + 

@@ -9,6 +9,9 @@ public class PlayerAttribute : MonoBehaviour
     private float SendPositionTimeout = -1;
     private Vector3 previousPosition;
     bool canQuit = false;
+    private int currentHealth = 100;
+    private float lastAttackTime;
+    public HealthBar healthBar;
 
     private void Start()
     {
@@ -16,8 +19,42 @@ public class PlayerAttribute : MonoBehaviour
         previousPosition = transform.position;
     }
 
+    public bool TakeDamage(int damageAmount)
+    {
+        lastAttackTime = Time.time;
+        currentHealth -= damageAmount;
+        Debug.Log($"Dégâts infligés : {damageAmount}, Santé restante : {currentHealth}");
+
+        if (currentHealth <= 0)
+        {
+            Die();
+            return true;
+        }
+
+        return false;
+    }
+
+    private void Die()
+    {
+        if (clientManager)
+        {
+            Destroy(gameObject);
+            SendQuitMessage();
+        }
+    }
+
     private void Update()
     {
+        GameObject zombie = GameObject.FindWithTag("Enemy");
+        if (zombie != null)
+        {           
+            float distance = Vector3.Distance(transform.position, zombie.transform.position);
+            if (distance <= 2f && Time.time >= lastAttackTime + 0.5f)
+            {
+                Debug.Log("Zombie is near!");
+                TakeDamage(20);
+            }
+        }
         if (string.IsNullOrEmpty(ID)) { return; }
 
         if (Time.time > SendPositionTimeout)

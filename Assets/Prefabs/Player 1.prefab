@@ -242,7 +242,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 98c82d64d6efd794e966212d9dd100da, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 134
+      value: 134.0846
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 98c82d64d6efd794e966212d9dd100da, type: 3}
       propertyPath: m_LocalPosition.y
@@ -250,23 +250,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 98c82d64d6efd794e966212d9dd100da, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 140
+      value: 140.18295
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 98c82d64d6efd794e966212d9dd100da, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.90765333
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 98c82d64d6efd794e966212d9dd100da, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 98c82d64d6efd794e966212d9dd100da, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.41972062
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 98c82d64d6efd794e966212d9dd100da, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 98c82d64d6efd794e966212d9dd100da, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -274,7 +274,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 98c82d64d6efd794e966212d9dd100da, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 49.634
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 98c82d64d6efd794e966212d9dd100da, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z

@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuUI : MonoBehaviour
 {
+    public TMPro.TMP_InputField InpIP;
     public void SetRole(bool isServer)
     {
         Globals.IsServer = isServer;
@@ -20,6 +21,7 @@ public class MenuUI : MonoBehaviour
 
     public void StartGame()
     {
+        Globals.IPServer = InpIP.text ?? "127.0.0.1";
         SceneManager.LoadScene("Game Scene");
     }
 }
