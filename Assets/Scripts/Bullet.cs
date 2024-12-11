@@ -19,11 +19,11 @@ public class Bullet : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         // Vérifie si la balle touche un ennemi
-        Zombie enemy = collision.gameObject.GetComponent<Zombie>();
-        if (enemy != null && collision.gameObject.CompareTag("Enemy"))
+        ZombieAttribute zombieAttribute = collision.gameObject.GetComponent<ZombieAttribute>();
+        if (zombieAttribute != null && collision.gameObject.CompareTag("Enemy"))
         {
             // Infliger des dégâts et incrémenter le score si l'ennemi est tué
-            if (enemy.TakeDamage(damageAmount) && scoreManager != null)
+            if (zombieAttribute.TakeDamage(damageAmount) && scoreManager != null)
             {
                 scoreManager.IncrementScore();
             }

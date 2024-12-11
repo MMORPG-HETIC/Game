@@ -25,6 +25,10 @@ public class PlayerSpawner : MonoBehaviour
             AnimationController animationController = o.GetComponent<AnimationController>();
             Rigidbody rigidbody = o.GetComponent<Rigidbody>();
             CharacterController characterController = o.GetComponent<CharacterController>();
+            Gun gun = o.GetComponent<Gun>();
+            Bullet bullet = o.GetComponent<Bullet>();
+            gun.enabled = false;
+            bullet.enabled = false;
             playerControler.enabled = false;
             animationController.enabled = false;
             Destroy(rigidbody);

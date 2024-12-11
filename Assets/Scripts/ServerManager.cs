@@ -100,6 +100,11 @@ public class ServerManager : MonoBehaviour
                         }
                         BroadcastUDPMessage(3, playerStatus, playerStatus.id);
                         break;
+                    case 6:
+                        PayloadCheck zombieDead = UDP.FromByteArray<PayloadCheck>(message);
+                        zombieFinder.RemoveZombie(zombieDead.id);
+                        BroadcastUDPMessage(6, zombieDead, zombieDead.id);
+                        break;
                     case 9://playerFinder quit
                         PayloadCheck quit = UDP.FromByteArray<PayloadCheck>(message);
                         playerFinder.RemovePlayer(quit.id);

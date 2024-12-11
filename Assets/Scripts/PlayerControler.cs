@@ -2,45 +2,96 @@ using UnityEngine;
 
 public class PlayerControler : MonoBehaviour
 {
+    [Header("Player Movement Configuration")]
     public float speed = 6f;
-
+    public float gravity = 20f;
+    public float mouseSensitivity = 150f;
+    public float keyboardSensitivity = 50f;
+    public float rotationSpeed = 100f;
     public float Jumpspeed = 8f;
 
-    public float gravity = 20f;
-
-    private Vector3 moveD = Vector3.zero;
-    CharacterController Cac;
-
-    void Awake()
-    {
-        // Desactiver mon objet si je ne suis pas le serveur
-        if (Globals.IsServer)
-        {
-            gameObject.SetActive(false);
-        }
-    }
+    private Vector3 moveDirection = Vector3.zero;
+    private CharacterController characterController;
+    private Animator playerAnimator;
 
     void Start()
     {
-        Cac = GetComponent<CharacterController>();
+        characterController = GetComponent<CharacterController>();
+        playerAnimator = GetComponent<Animator>();
+
+        if (playerAnimator == null)
+        {
+            Debug.LogWarning("Aucun Animator trouv? sur le GameObject !");
+        }
     }
 
     void Update()
     {
-        if (Cac.isGrounded)
+        HandleMovement();
+        HandleCameraControl();
+    }
+
+    void HandleMovement()
+    {
+        if (characterController.isGrounded)
         {
-            moveD = new Vector3(0, 0, Input.GetAxis("Vertical"));
-            moveD = transform.TransformDirection(moveD);
-            moveD *= speed;
+            float moveHorizontal = Input.GetAxis("Horizontal");
+            float moveVertical = Input.GetAxis("Vertical");
 
-         if (Input.GetButton("Jump"))
+            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) ||
+                Input.GetKey(KeyCode.Keypad4) || Input.GetKey(KeyCode.Keypad6))
             {
-                moveD.y = Jumpspeed;
-            }                       
-        }
-        moveD.y -= gravity * Time.deltaTime;
-        transform.Rotate(Vector3.up * Input.GetAxis("Horizontal") * Time.deltaTime * speed * 10);
+                moveHorizontal = 0;
+            }
 
-        Cac.Move(moveD * Time.deltaTime);
+            moveDirection = new Vector3(moveHorizontal, 0, moveVertical);
+            moveDirection = transform.TransformDirection(moveDirection) * speed;
+
+            if (playerAnimator != null && playerAnimator.HasParameter("MoveSpeed"))
+            {
+                playerAnimator.SetFloat("MoveSpeed", moveDirection.magnitude);
+            }
+
+            if (Input.GetButton("Jump"))
+            {
+                moveDirection.y = Jumpspeed;
+            }
+        }
+
+        moveDirection.y -= gravity * Time.deltaTime;
+
+        characterController.Move(moveDirection * Time.deltaTime);
+    }
+
+    void HandleCameraControl()
+    {
+        float rotationInput = Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
+
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.Keypad4))
+        {
+            rotationInput -= rotationSpeed * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.Keypad6))
+        {
+            rotationInput += rotationSpeed * Time.deltaTime;
+        }
+
+        transform.Rotate(0, rotationInput, 0);
     }
 }
+
+public static class AnimatorExtensions
+{
+    public static bool HasParameter(this Animator animator, string paramName)
+    {
+        foreach (var param in animator.parameters)
+        {
+            if (param.name == paramName)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+

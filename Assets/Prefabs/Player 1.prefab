@@ -416,6 +416,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 7
+  gravity: 20
+  mouseSensitivity: 150
+  keyboardSensitivity: 50
+  rotationSpeed: 200
   Jumpspeed: 8
 --- !u!114 &1399432316442487317
 MonoBehaviour:
@@ -458,7 +462,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6306056173899736288}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 21777d8e16c35164da5052dc1d01de70, type: 3}
   m_Name: 
@@ -475,7 +479,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6306056173899736288}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d82ea25724fd6a4cae00ab2919e6a2a, type: 3}
   m_Name: 
