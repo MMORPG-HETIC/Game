@@ -71,10 +71,18 @@ public class ServerManager : MonoBehaviour
                             }
                         }
 
+                        foreach (var zombie in zombieFinder.GetAllZombies())
+                        {
+                            ZombieAttribute zombieAttribute = zombie.GetComponent<ZombieAttribute>();
+                            PayloadZombieSpawn existingZombieSpawn = new PayloadZombieSpawn{id = zombieAttribute.ID};
+                            byte[] bytesZombie = UDP.ObjectToByteArray(4, existingZombieSpawn);
+                            UDP.SendUDPBytes(bytesZombie, sender);
+                        }
+
                         BroadcastUDPMessage(2, spawn, addr);
 
                         PayloadZombieSpawn spawnZombie = new PayloadZombieSpawn { id = addr };
-                        BroadcastUDPMessage(4, spawnZombie);
+                        BroadcastUDPMessage(4, spawnZombie, addr);
                         break;
                     case 3://players positions
 
@@ -87,7 +95,6 @@ public class ServerManager : MonoBehaviour
                         Animator animator = playerToMove.GetComponent<Animator>();
                         if (animator != null)
                         {
-                            Debug.Log("animator not null and isMoving: " + playerStatus.GetIsMoving());
                             animator.SetFloat("walk", playerStatus.GetIsMoving() ? 1f : 0f);
                             animator.SetBool("isBacking", false);
                         }

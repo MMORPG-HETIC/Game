@@ -31,6 +31,11 @@ public class ZombieFinder : MonoBehaviour
         return null;
     }
 
+    public IEnumerable<GameObject> GetAllZombies()
+    {
+        return Zombies.Values;
+    }
+
     public void RemovePlayer(string id)
     {
         GameObject zombie = FindZombieByID(id);

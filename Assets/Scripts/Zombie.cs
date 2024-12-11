@@ -13,6 +13,7 @@ public class Zombie : MonoBehaviour
     public float attackCooldown = 0.5f;
     private PlayerHealth playerHealth;
     private float lastAttackTime;
+    private PlayerFinder playerFinder;
 
     //private void Awake()
     //{
@@ -24,7 +25,7 @@ public class Zombie : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        
 
         if (player != null)
         {

@@ -1,39 +1,38 @@
 ﻿<Properties StartupConfiguration="{DDFBC18F-9396-3137-9CFE-DEB2CDB74636}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PayloadZombieSpawn.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/MenuUI.cs">
     <Files>
       <File FileName="Assets/Scripts/Globals.cs" Line="6" Column="52" />
-      <File FileName="Assets/Scripts/MenuUI.cs" />
-      <File FileName="Assets/Scripts/Animation.cs" Line="19" Column="55" />
-      <File FileName="Assets/Scripts/ClientManager.cs" Line="68" Column="60" />
-      <File FileName="Assets/Scripts/ServerManager.cs" Line="74" Column="61" />
-      <File FileName="Assets/Scripts/UDPService.cs" Line="116" Column="14" />
-      <File FileName="Assets/Scripts/Zombie.cs" Line="39" Column="29" />
-      <File FileName="Assets/Scripts/PayloadPlayerStatus.cs" Line="52" Column="6" />
-      <File FileName="Assets/Scripts/ScoreManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/MenuUI.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Animation.cs" />
+      <File FileName="Assets/Scripts/ClientManager.cs" />
+      <File FileName="Assets/Scripts/ServerManager.cs" />
+      <File FileName="Assets/Scripts/UDPService.cs" />
+      <File FileName="Assets/Scripts/Zombie.cs" />
+      <File FileName="Assets/Scripts/PayloadPlayerStatus.cs" />
+      <File FileName="Assets/Scripts/ScoreManager.cs" />
       <File FileName="Assets/Scripts/PayloadCheck.cs" />
-      <File FileName="Assets/Scripts/PayloadZombieStatus.cs" Line="15" Column="1" />
+      <File FileName="Assets/Scripts/PayloadZombieStatus.cs" />
       <File FileName="Assets/Scripts/Zombiesound.cs" />
       <File FileName="Assets/Scripts/Bullet.cs" />
-      <File FileName="Assets/Scripts/PlayerControler.cs" Line="10" Column="1" />
-      <File FileName="Assets/Scripts/PlayerSpawner.cs" Line="8" Column="5" />
-      <File FileName="Assets/Scripts/ZombieSpawner.cs" Line="12" Column="17" />
+      <File FileName="Assets/Scripts/PlayerControler.cs" Line="25" Column="51" />
+      <File FileName="Assets/Scripts/PlayerSpawner.cs" />
+      <File FileName="Assets/Scripts/ZombieSpawner.cs" />
       <File FileName="Assets/Scripts/PlayerHealth.cs" />
-      <File FileName="Assets/Scripts/PlayerAttribute.cs" Line="17" Column="6" />
-      <File FileName="Assets/Scripts/PayloadSpawnPlayer.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/PlayerAttribute.cs" />
+      <File FileName="Assets/Scripts/PayloadSpawnPlayer.cs" />
       <File FileName="Assets/Scripts/audio.cs" />
-      <File FileName="Assets/Scripts/PlayerFinder.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/ZombieFinder.cs" Line="36" Column="6" />
-      <File FileName="Assets/Scripts/ZombieAttribute.cs" Line="10" Column="6" />
-      <File FileName="Assets/Scripts/PayloadZombieSpawn.cs" Line="11" Column="1" />
+      <File FileName="Assets/Scripts/PlayerFinder.cs" />
+      <File FileName="Assets/Scripts/ZombieFinder.cs" />
+      <File FileName="Assets/Scripts/ZombieAttribute.cs" />
+      <File FileName="Assets/Scripts/PayloadZombieSpawn.cs" />
+      <File FileName="Assets/Scripts/Gun.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Game" expanded="True">
-            <Node name="Assets" expanded="True">
-              <Node name="Scripts" expanded="True">
-                <Node name="PayloadZombieSpawn.cs" selected="True" />
-              </Node>
+            <Node name="Assets" expanded="True" selected="True">
+              <Node name="Scripts" expanded="True" />
             </Node>
           </Node>
         </State>
@@ -42,7 +41,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="4362ebf7-75f8-41ee-9486-1d192ce76697" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="270ea29c-e69c-4050-a5e7-779eccc1104b" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
