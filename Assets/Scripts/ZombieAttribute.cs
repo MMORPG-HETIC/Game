@@ -11,7 +11,7 @@ public class ZombieAttribute : MonoBehaviour
     private NavMeshAgent agent;
     private GameObject playerToAttack;
     public int maxHealth = 100;
-    private int currentHealth;
+    private int currentHealth = 100;
     public int damagePerAttack = 20;
     public float attackRange = 2f;
     public float attackCooldown = 0.5f;
@@ -19,6 +19,7 @@ public class ZombieAttribute : MonoBehaviour
     private void Start()
     {
         serverManager = FindFirstObjectByType<ServerManager>();
+        clientManager = FindFirstObjectByType<ClientManager>();
         playerFinder = GameObject.FindFirstObjectByType<PlayerFinder>();
         playerToAttack = playerFinder.FindPlayerByID(ID);
         agent = GetComponent<NavMeshAgent>();
@@ -40,7 +41,7 @@ public class ZombieAttribute : MonoBehaviour
 
     private void Die()
     {
-        if (Time.time > SendPositionTimeout && serverManager)
+        if (clientManager)
         {
             PayloadCheck die = new PayloadCheck { id = ID};
             clientManager.SendServerUDPMessage(6, die);

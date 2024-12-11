@@ -11,11 +11,11 @@ public class Gun : MonoBehaviour
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource != null)
-        {
-            audioSource.volume = shootVolume;
-        }
+        //audioSource = GetComponent<AudioSource>();
+        //if (audioSource != null)
+        //{
+        //    audioSource.volume = shootVolume;
+        //}
     }
 
     void Update()
@@ -35,9 +35,9 @@ public class Gun : MonoBehaviour
             bulletRigidbody.linearVelocity = bulletSpawnPoint.forward * bulletSpeed;
         }
 
-        if (audioSource != null && shootSound != null)
-        {
-            audioSource.PlayOneShot(shootSound);
-        }
+        //if (audioSource != null && shootSound != null)
+        //{
+        //    audioSource.PlayOneShot(shootSound);
+        //}
     }
 }
