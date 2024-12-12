@@ -32,15 +32,10 @@ public class ServerManager : MonoBehaviour
 
         UDP.OnMessageReceived +=  
             (byte[] message, IPEndPoint sender) => {
-                Debug.Log("[SERVER] Message received from " + 
-                    sender.Address.ToString() + ":" + sender.Port 
-                    + " =>" + message[0]);
-                
                 switch (message[0]) {
                     case 0://getCoucou
                         // Ajouter le client à mon dictionnaire
                         string addr = sender.Address.ToString() + ":" + sender.Port;
-                        Debug.Log(addr);
                         PayloadCheck check = new PayloadCheck { id = addr };
                         byte[] bytesCheck = UDP.ObjectToByteArray(0, check);
                         UDP.SendUDPBytes(bytesCheck, sender);
@@ -51,7 +46,6 @@ public class ServerManager : MonoBehaviour
                         if (!Clients.ContainsKey(addr)) {
                             Clients.Add(addr, sender);
                         }
-                        Debug.Log("There are " + Clients.Count + " clients present. : " + addr);
 
                         PayloadSpawnPlayer spawn = new PayloadSpawnPlayer { id = addr };
                         byte[] bytes = UDP.ObjectToByteArray(1, spawn);

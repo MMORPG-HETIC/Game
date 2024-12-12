@@ -1,39 +1,43 @@
 ﻿<Properties StartupConfiguration="{DDFBC18F-9396-3137-9CFE-DEB2CDB74636}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ClientManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ServerManager.cs">
     <Files>
       <File FileName="Assets/Scripts/Globals.cs" Line="6" Column="47" />
       <File FileName="Assets/Scripts/MenuUI.cs" />
       <File FileName="Assets/Scripts/Animation.cs" />
-      <File FileName="Assets/Scripts/ClientManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/ServerManager.cs" />
-      <File FileName="Assets/Scripts/UDPService.cs" />
+      <File FileName="Assets/Scripts/ClientManager.cs" Line="99" Column="6" />
+      <File FileName="Assets/Scripts/ServerManager.cs" Line="35" Column="17" />
+      <File FileName="Assets/Scripts/UDPService.cs" Line="91" Column="1" />
       <File FileName="Assets/Scripts/Zombie.cs" />
       <File FileName="Assets/Scripts/PayloadPlayerStatus.cs" />
       <File FileName="Assets/Scripts/ScoreManager.cs" />
       <File FileName="Assets/Scripts/PayloadCheck.cs" />
       <File FileName="Assets/Scripts/PayloadZombieStatus.cs" />
       <File FileName="Assets/Scripts/Zombiesound.cs" />
-      <File FileName="Assets/Scripts/Bullet.cs" />
-      <File FileName="Assets/Scripts/PlayerControler.cs" />
+      <File FileName="Assets/Scripts/Bullet.cs" Line="15" Column="13" />
+      <File FileName="Assets/Scripts/PlayerControler.cs" Line="25" Column="9" />
       <File FileName="Assets/Scripts/PlayerSpawner.cs" />
       <File FileName="Assets/Scripts/ZombieSpawner.cs" />
-      <File FileName="Assets/Scripts/PlayerHealth.cs" />
-      <File FileName="Assets/Scripts/PlayerAttribute.cs" Line="75" Column="54" />
+      <File FileName="Assets/Scripts/PlayerHealth.cs" Line="47" Column="44" />
+      <File FileName="Assets/Scripts/PlayerAttribute.cs" Line="96" Column="53" />
       <File FileName="Assets/Scripts/PayloadSpawnPlayer.cs" />
       <File FileName="Assets/Scripts/audio.cs" />
-      <File FileName="Assets/Scripts/PlayerFinder.cs" />
-      <File FileName="Assets/Scripts/ZombieFinder.cs" />
+      <File FileName="Assets/Scripts/PlayerFinder.cs" Line="8" Column="6" />
+      <File FileName="Assets/Scripts/ZombieFinder.cs" Line="13" Column="32" />
       <File FileName="Assets/Scripts/ZombieAttribute.cs" />
       <File FileName="Assets/Scripts/PayloadZombieSpawn.cs" />
       <File FileName="Assets/Scripts/Gun.cs" />
       <File FileName="Assets/Scripts/HealthBar.cs" />
+      <File FileName="Assets/Scripts/Backgroundmusique.cs" Line="24" Column="13" />
+      <File FileName="Assets/Scripts/PotionHealth.cs" Line="17" Column="33" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Game" expanded="True">
-            <Node name="Assets" expanded="True" selected="True">
-              <Node name="Scripts" expanded="True" />
+            <Node name="Assets" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="ServerManager.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>

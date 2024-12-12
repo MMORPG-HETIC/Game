@@ -28,7 +28,6 @@ public class ZombieAttribute : MonoBehaviour
     public bool TakeDamage(int damageAmount)
     {
         currentHealth -= damageAmount;
-        Debug.Log($"D?g?ts inflig?s : {damageAmount}, Sant? restante : {currentHealth}");
 
         if (currentHealth <= 0)
         {

@@ -61,9 +61,7 @@ public class Zombie : MonoBehaviour
 
     public bool TakeDamage(int damageAmount)
     {
-        // Réduire la santé et vérifier si l'ennemi est tué
         currentHealth -= damageAmount;
-        Debug.Log($"Dégâts infligés : {damageAmount}, Santé restante : {currentHealth}");
 
         if (currentHealth <= 0)
         {
@@ -76,7 +74,6 @@ public class Zombie : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Ennemi éliminé !");
         Destroy(gameObject);
     }
 
@@ -84,7 +81,5 @@ public class Zombie : MonoBehaviour
     {
         playerHealth.TakeDamage(damagePerAttack);
         lastAttackTime = Time.time;
-
-        Debug.Log($"Zombie attaque pour {damagePerAttack} dégâts. Santé restante du joueur : {playerHealth.currentHealth}");
     }
 }

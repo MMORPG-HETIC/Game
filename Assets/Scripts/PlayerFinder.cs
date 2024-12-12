@@ -6,7 +6,6 @@ public class PlayerFinder : MonoBehaviour
 
     public void RegisterPlayer(string id, GameObject player)
     {
-        Debug.Log("register player : " + id);
         Players.Add(id, player);
     }
 

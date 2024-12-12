@@ -7,7 +7,6 @@ public class ZombieFinder : MonoBehaviour
 
     public void RegisterZombie(string id, GameObject zombie)
     {
-        Debug.Log("register zombie : " + id);
         if (Zombies.ContainsKey(id))
         {
             Zombies.Remove(id);

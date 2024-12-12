@@ -15,8 +15,6 @@ public class PotionHealth : MonoBehaviour
 
             // Détruire la potion après utilisation
             Destroy(gameObject);
-
-            Debug.Log("Potion utilisée, vie restaurée !");
         }
     }
 }

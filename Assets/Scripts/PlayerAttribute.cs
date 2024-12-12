@@ -23,7 +23,6 @@ public class PlayerAttribute : MonoBehaviour
     {
         lastAttackTime = Time.time;
         currentHealth -= damageAmount;
-        Debug.Log($"Dégâts infligés : {damageAmount}, Santé restante : {currentHealth}");
 
         if (currentHealth <= 0)
         {
@@ -51,7 +50,6 @@ public class PlayerAttribute : MonoBehaviour
             float distance = Vector3.Distance(transform.position, zombie.transform.position);
             if (distance <= 2f && Time.time >= lastAttackTime + 0.5f)
             {
-                Debug.Log("Zombie is near!");
                 TakeDamage(20);
             }
         }
@@ -96,7 +94,6 @@ public class PlayerAttribute : MonoBehaviour
     {
         PayloadCheck quit = new PayloadCheck { id = ID };
         clientManager.SendServerUDPMessage(9, quit);
-        Debug.Log("Message envoyé avant de quitter.");
     }
 
     private bool WantsToQuit()

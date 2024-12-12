@@ -45,8 +45,6 @@ public class PlayerHealth : MonoBehaviour
 
         // Mettre à jour la barre de santé
         healthBar.SetSlider(currentHealth);
-
-        Debug.Log($"Vie restaurée : +{healAmount}. Vie actuelle : {currentHealth}");
     }
 
     void Die()

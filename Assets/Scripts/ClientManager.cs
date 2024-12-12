@@ -34,9 +34,6 @@ public class ClientManager : MonoBehaviour
         ServerEndpoint = new IPEndPoint(IPAddress.Parse(Globals.IPServer), ServerPort);
             
         UDP.OnMessageReceived += (byte[] message, IPEndPoint sender) => {
-            Debug.Log("[CLIENT] Message received from " + 
-                sender.Address.ToString() + ":" + sender.Port + "message " + message[0]);
-
             switch (message[0]) {
                 case 0://checkCoucou
                     NextCoucouTimeout = Time.time + 20;
@@ -48,7 +45,6 @@ public class ClientManager : MonoBehaviour
                     break;
                 case 2://spawnPlayer external
                     PayloadSpawnPlayer ExternalPlayerToSpawn = UDP.FromByteArray<PayloadSpawnPlayer>(message);
-                    Debug.Log("payloadSpawner" + ExternalPlayerToSpawn.id);
                     GameObject externalPlayer = playerSpawner.SpawnPlayer(ExternalPlayerToSpawn.id, false);
                     playerFinder.RegisterPlayer(ExternalPlayerToSpawn.id, externalPlayer);
                     break;
@@ -60,7 +56,6 @@ public class ClientManager : MonoBehaviour
                     Animator animator = ExternalPlayerToMove.GetComponent<Animator>();
                     if (animator != null)
                     {
-                        Debug.Log("animator not null and isMoving: " + playerStatus.GetIsMoving());
                         animator.SetFloat("walk", playerStatus.GetIsMoving() ? 1f : 0f);
                         animator.SetBool("isBacking", false);
                     }
@@ -68,12 +63,10 @@ public class ClientManager : MonoBehaviour
                     break;
                 case 4: // Zombie spawn
                     PayloadZombieSpawn zombieSpawn = UDP.FromByteArray<PayloadZombieSpawn>(message);
-                    Debug.Log("Zombie ID à spawn : " + zombieSpawn.id);
 
                     GameObject existingZombie = zombieFinder.FindZombieByID(zombieSpawn.id);
                     if (existingZombie != null)
                     {
-                        Debug.Log("Zombie existant trouvé avec ID " + zombieSpawn.id + ". Suppression...");
                         zombieFinder.RemoveZombie(zombieSpawn.id);
                     }
 
@@ -81,7 +74,6 @@ public class ClientManager : MonoBehaviour
                     if (zombieSpawned != null)
                     {
                         zombieFinder.RegisterZombie(zombieSpawn.id, zombieSpawned);
-                        Debug.Log("Nouveau zombie enregistré avec ID : " + zombieSpawn.id);
                     }
                     else
                     {
@@ -96,7 +88,6 @@ public class ClientManager : MonoBehaviour
                     break;
                 case 6: //Zombie dead
                     PayloadCheck zombieDead = UDP.FromByteArray<PayloadCheck>(message);
-                    Debug.Log("Zombie dead" + zombieDead.id);
                     zombieFinder.RemoveZombie(zombieDead.id);
                     break;
                 case 9://playerFinder quit
