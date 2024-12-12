@@ -69,7 +69,7 @@ public class ZombieAttribute : MonoBehaviour
 
             serverManager.BroadcastUDPMessage(5, status);
 
-            SendPositionTimeout = Time.time + 0.06f;
+            SendPositionTimeout = Time.time + 0.0333f;
         }
     }
 }

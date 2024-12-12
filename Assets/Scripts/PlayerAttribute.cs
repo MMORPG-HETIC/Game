@@ -57,7 +57,7 @@ public class PlayerAttribute : MonoBehaviour
         }
         if (string.IsNullOrEmpty(ID)) { return; }
 
-        if (Time.time > SendPositionTimeout)
+        if (Time.time > SendPositionTimeout && clientManager)
         {
             PayloadPlayerStatus status = new PayloadPlayerStatus
             {
@@ -72,7 +72,7 @@ public class PlayerAttribute : MonoBehaviour
 
             clientManager.SendServerUDPMessage(3, status);
 
-            SendPositionTimeout = Time.time + 0.06f;
+            SendPositionTimeout = Time.time + 0.0333f;
             previousPosition = transform.position;
         }
     }

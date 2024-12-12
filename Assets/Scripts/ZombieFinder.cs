@@ -8,6 +8,10 @@ public class ZombieFinder : MonoBehaviour
     public void RegisterZombie(string id, GameObject zombie)
     {
         Debug.Log("register zombie : " + id);
+        if (Zombies.ContainsKey(id))
+        {
+            Zombies.Remove(id);
+        }
         Zombies.Add(id, zombie);
     }
 
@@ -40,6 +44,7 @@ public class ZombieFinder : MonoBehaviour
     {
         GameObject zombie = FindZombieByID(id);
         Zombies.Remove(id);
-        Destroy(zombie);
+        //Destroy(zombie);
+        DestroyImmediate(zombie);
     }
 }

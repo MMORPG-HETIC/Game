@@ -66,11 +66,27 @@ public class ClientManager : MonoBehaviour
                     }
                     //ExternalPlayerToMove.transform.position = playerStatus.GetPosition();
                     break;
-                case 4://zombieSpawn
+                case 4: // Zombie spawn
                     PayloadZombieSpawn zombieSpawn = UDP.FromByteArray<PayloadZombieSpawn>(message);
-                    Debug.Log("zombie id to spawn : " + zombieSpawn.id);
+                    Debug.Log("Zombie ID à spawn : " + zombieSpawn.id);
+
+                    GameObject existingZombie = zombieFinder.FindZombieByID(zombieSpawn.id);
+                    if (existingZombie != null)
+                    {
+                        Debug.Log("Zombie existant trouvé avec ID " + zombieSpawn.id + ". Suppression...");
+                        zombieFinder.RemoveZombie(zombieSpawn.id);
+                    }
+
                     GameObject zombieSpawned = zombieSpawner.SpawnZombie(zombieSpawn.id);
-                    zombieFinder.RegisterZombie(zombieSpawn.id, zombieSpawned);
+                    if (zombieSpawned != null)
+                    {
+                        zombieFinder.RegisterZombie(zombieSpawn.id, zombieSpawned);
+                        Debug.Log("Nouveau zombie enregistré avec ID : " + zombieSpawn.id);
+                    }
+                    else
+                    {
+                        Debug.LogError("Echec du spawn pour le zombie avec ID : " + zombieSpawn.id);
+                    }
                     break;
                 case 5://zombiePosition
                     PayloadZombieStatus zombieStatus = UDP.FromByteArray<PayloadZombieStatus>(message);
@@ -78,8 +94,9 @@ public class ClientManager : MonoBehaviour
                     zombieToMove.transform.position = zombieStatus.GetPosition();
                     zombieToMove.transform.rotation = zombieStatus.GetRotation();
                     break;
-                case 6:
+                case 6: //Zombie dead
                     PayloadCheck zombieDead = UDP.FromByteArray<PayloadCheck>(message);
+                    Debug.Log("Zombie dead" + zombieDead.id);
                     zombieFinder.RemoveZombie(zombieDead.id);
                     break;
                 case 9://playerFinder quit

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
@@ -98,14 +99,28 @@ public class ServerManager : MonoBehaviour
                             animator.SetFloat("walk", playerStatus.GetIsMoving() ? 1f : 0f);
                             animator.SetBool("isBacking", false);
                         }
-                        BroadcastUDPMessage(3, playerStatus, playerStatus.id);
+                        BroadcastByte(message, playerStatus.id);
+                        //BroadcastUDPMessage(3, playerStatus, playerStatus.id);
                         break;
+                    //case 6:
+                    //    string addrKiller = sender.Address.ToString() + ":" + sender.Port;
+                    //    PayloadCheck zombieDead = UDP.FromByteArray<PayloadCheck>(message);
+                    //    zombieFinder.RemoveZombie(zombieDead.id);
+                    //    BroadcastUDPMessage(6, zombieDead, addrKiller);
+                    //    GameObject resurrectZombie = zombieSpawner.SpawnZombie(zombieDead.id);
+                    //    zombieFinder.RegisterZombie(zombieDead.id, resurrectZombie);
+
+                    //    PayloadZombieSpawn spawnResurectZombie = new PayloadZombieSpawn { id = zombieDead.id };
+                    //    BroadcastUDPMessage(4, spawnResurectZombie);
+                    //    break;
                     case 6:
                         string addrKiller = sender.Address.ToString() + ":" + sender.Port;
                         PayloadCheck zombieDead = UDP.FromByteArray<PayloadCheck>(message);
-                        zombieFinder.RemoveZombie(zombieDead.id);
-                        BroadcastUDPMessage(6, zombieDead, addrKiller);
+
+                        // Lancer la coroutine pour gérer la suppression et le respawn
+                        StartCoroutine(HandleZombieRespawn(addrKiller, zombieDead));
                         break;
+
                     case 9://playerFinder quit
                         PayloadCheck quit = UDP.FromByteArray<PayloadCheck>(message);
                         playerFinder.RemovePlayer(quit.id);
@@ -129,12 +144,38 @@ public class ServerManager : MonoBehaviour
     }
 
     public void BroadcastUDPMessage<T>(byte type, T obj, string clientId = "") {
+        byte[] bytes = UDP.ObjectToByteArray(type, obj);
         foreach (KeyValuePair<string, IPEndPoint> client in Clients) {
             if (client.Key != clientId)
             {
-                byte[] bytes = UDP.ObjectToByteArray(type, obj);
                 UDP.SendUDPBytes(bytes, client.Value);
             }
         }
     }
+
+    public void BroadcastByte(byte[] message, string clientId = "")
+    {
+        foreach (KeyValuePair<string, IPEndPoint> client in Clients)
+        {
+            if (client.Key != clientId)
+            {
+                UDP.SendUDPBytes(message, client.Value);
+            }
+        }
+    }
+
+    private IEnumerator HandleZombieRespawn(string addrKiller, PayloadCheck zombieDead)
+    {
+        zombieFinder.RemoveZombie(zombieDead.id);
+        BroadcastUDPMessage(6, zombieDead, addrKiller);
+
+        yield return new WaitForSeconds(2);
+
+        GameObject resurrectZombie = zombieSpawner.SpawnZombie(zombieDead.id);
+        zombieFinder.RegisterZombie(zombieDead.id, resurrectZombie);
+
+        PayloadZombieSpawn spawnResurrectZombie = new PayloadZombieSpawn { id = zombieDead.id };
+        BroadcastUDPMessage(4, spawnResurrectZombie);
+    }
+
 }
