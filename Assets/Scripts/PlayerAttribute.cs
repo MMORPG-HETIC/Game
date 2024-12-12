@@ -92,8 +92,11 @@ public class PlayerAttribute : MonoBehaviour
 
     private void SendQuitMessage()
     {
-        PayloadCheck quit = new PayloadCheck { id = ID };
-        clientManager.SendServerUDPMessage(9, quit);
+        if (clientManager)
+        {
+            PayloadCheck quit = new PayloadCheck { id = ID };
+            clientManager.SendServerUDPMessage(9, quit);
+        }
     }
 
     private bool WantsToQuit()
